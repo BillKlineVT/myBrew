@@ -4,7 +4,7 @@ QT-based Beer Brewing Controller and Monitoring
 ## UI
 ![alt text](https://github.com/BillKlineVT/myBrew/blob/master/myBrew%20screenshots/myBrew%20UI%20screenshot.png?raw=true)
 - The main user interface is intended to be touchscreen friendly, but needs some more work to evaluate button sizes
-- There are tabs for displays relevant to each step of the brewing process.  This includes 
+- There are tabs for displays relevant to each step of the brewing process.
 
 ## File Structure
 - Base directory of repo includes source code and project files for the QT IDE-based GUI for myBrew
