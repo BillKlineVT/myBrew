@@ -9,6 +9,7 @@ QT-based Beer Brewing Controller and Monitoring
 ## File Structure
 - Base directory of repo includes source code and project files for the QT IDE-based GUI for myBrew
 - Subdirectories include helper-function Python apps for database interactions, Raspberry Pi GPIO interaction, PID & PWM Controller libraries
+- The QT GUI and Python-based processing apps are linked via an sqlite database to allow for multi-service data access which also enables datalogging for post-brew session data review.
  
 ## Hardware
 - System is designed to run on a Raspberry Pi, should support any version after Rasbperry Pi 1 B
