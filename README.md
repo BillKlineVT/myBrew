@@ -17,4 +17,6 @@ QT-based Beer Brewing Controller and Monitoring
 - Pulse Width Modulation (PWM) is done using Raspberry Pi PWM library.  This enables gradual heating needed to implement PID algorithm.
 
 <p align="center">
-<img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20v1%20schematic%20(2x%20120VAC%20circuits).JPG?raw=true" alt="" width="800"/> </p>
+<img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20Toolbox.JPG?raw=true" width="400"/>  <img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20Toolbox%20internal.JPG?raw=true" width="400"/>
+<img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20v1%20schematic%20(2x%20120VAC%20circuits).JPG?raw=true" alt="" width="800"/> 
+</p>
