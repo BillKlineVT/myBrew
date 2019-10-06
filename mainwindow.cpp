@@ -359,6 +359,7 @@ void MainWindow::updatePostBoilTimerDisplay()
             int numRows = ui->Table_PostBoil_HopTimer->rowCount();
             for(int i=0;i<numRows;i++)
             {
+                QTime qhop_time_remaining = QTime(0,0,0,0);
                 QColor text_color;
                 //qDebug() << "hop_timer_end " << hop_timer_end[i].time().toString();
                 int hop_time_remaining = QDateTime::currentDateTime().secsTo(hop_timer_end[i]);
