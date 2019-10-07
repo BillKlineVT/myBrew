@@ -18,7 +18,7 @@ pipeline {
               sh 'cp *.jpeg package_build'
               sh 'cp *.wav package_build'
               sh 'cd package_build'
-              sh 'tar cvzf ../myBrew_v${BUILD_NUMBER}.tar.gz *
+              sh 'tar cvzf ../myBrew_v${BUILD_NUMBER}.tar.gz *'
               sh 'cd ..'
               sh 'rm -rf package_build'
             }
