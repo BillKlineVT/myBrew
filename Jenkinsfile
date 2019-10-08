@@ -1,5 +1,16 @@
 #!groovy
 
+def server = Artifactory.newServer url: 'artifactory-url', credentialsId: '64b21b56-0d9a-49d6-9ea1-399a1377b13f'
+def uploadSpec = """{
+   "files": [
+    {
+      "pattern": "myBrew_v${BUILD_NUMBER}.tar.gz",
+      "target": "generic-local/myBrew/"
+    }
+  ]
+}"""
+
+
 pipeline {
     agent any
     stages {
@@ -24,16 +35,6 @@ pipeline {
             }
         }
         stage('deliver'){
-        
-          def server = Artifactory.newServer url: 'artifactory-url', credentialsId: '64b21b56-0d9a-49d6-9ea1-399a1377b13f'
-          def uploadSpec = """{
-            "files": [
-              {
-                "pattern": "myBrew_v${BUILD_NUMBER}.tar.gz",
-                "target": "generic-local/myBrew/"
-              }
-            ]
-          }"""
           server.upload spec: uploadSpec, failNoOp: true
         }
     }
