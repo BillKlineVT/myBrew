@@ -34,8 +34,10 @@ pipeline {
               sh 'rm -rf package_build'
             }
         }
-        stage('deliver'){
-          server.upload spec: uploadSpec, failNoOp: true
+        stage('deliver') {
+          steps {
+            server.upload spec: uploadSpec, failNoOp: true
+          }
         }
     }
 }
