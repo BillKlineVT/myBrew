@@ -41,7 +41,7 @@ pipeline {
         }
         stage('static-analysis') {
           steps {
-            sh 'cppcheck --xml --xml-version=2 . 2> cppcheck.xml'
+            sh 'cppcheck cppcheck --enable=all --inconclusive --xml --xml-version=2 . 2> cppcheck.xml'
             publishCppcheck pattern: 'cppcheck.xml'
           }
         }
