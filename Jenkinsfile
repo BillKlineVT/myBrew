@@ -39,5 +39,11 @@ pipeline {
             }
           }
         }
+        stage('static-analysis') {
+          steps {
+            sh 'cppcheck --xml --xml-version=2 . 2> cppcheck.xml'
+            sh 'scanForIssues tool: cppCheck(pattern: 'cppcheck.xml')'
+          }
+        }
     }
 }
