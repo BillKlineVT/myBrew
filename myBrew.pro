@@ -11,56 +11,57 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = myBrew
 TEMPLATE = app
 
+INCLUDEPATH += src/ include/pugixml include/openbrew include/qcustomplot
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    qcustomplot.cpp \
-    SensorWorkerThread.cpp \
-    PIDThread.cpp \
-    beerxmlrecipe.cpp \
-    pugixml.cpp \
-    vessel.cpp \
-    mlt.cpp \
-    kettle.cpp \
-    step.cpp \
-    hlt.cpp \
-    hop.cpp \
-    fermentable.cpp \
-    brewconstantspopup.cpp \
-    brewstepdurationpopup.cpp \
-    tempprobecalibrationpopup.cpp \
-    hltpidsettingspopup.cpp \
-    bkpidsettingspopup.cpp \
-    audio_alarmsettingspopup.cpp \
-    brewerysettings.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    include/qcustomplot/qcustomplot.cpp \
+    src/SensorWorkerThread.cpp \
+    src/PIDThread.cpp \
+    src/beerxmlrecipe.cpp \
+    include/pugixml/pugixml.cpp \
+    include/openbrew/vessel.cpp \
+    include/openbrew/mlt.cpp \
+    include/openbrew/kettle.cpp \
+    include/openbrew/step.cpp \
+    include/openbrew/hlt.cpp \
+    include/openbrew/hop.cpp \
+    include/openbrew/fermentable.cpp \
+    src/brewconstantspopup.cpp \
+    src/brewstepdurationpopup.cpp \
+    src/tempprobecalibrationpopup.cpp \
+    src/hltpidsettingspopup.cpp \
+    src/bkpidsettingspopup.cpp \
+    src/audio_alarmsettingspopup.cpp \
+    src/brewerysettings.cpp
 
-HEADERS  += mainwindow.h \
-    qcustomplot.h \
-    SensorWorkerThread.h \
-    PIDThread.h \
-    beerxmlrecipe.h \
-    pugixml.hpp \
-    pugiconfig.hpp \
-    vessel.h \
-    mlt.h \
-    kettle.h \
-    defines.h \
-    step.h \
-    hlt.h \
-    hop.h \
-    fermentable.h \
-    brewconstantspopup.h \
-    brewstepdurationpopup.h \
-    tempprobecalibrationpopup.h \
-    hltpidsettingspopup.h \
-    bkpidsettingspopup.h \
-    audio_alarmsettingspopup.h \
-    brewerysettings.h
+HEADERS  += src/mainwindow.h \
+    include/qcustomplot/qcustomplot.h \
+    src/SensorWorkerThread.h \
+    src/PIDThread.h \
+    src/beerxmlrecipe.h \
+    include/pugixml/pugixml.hpp \
+    include/pugixml/pugiconfig.hpp \
+    include/openbrew/vessel.h \
+    include/openbrew/mlt.h \
+    include/openbrew/kettle.h \
+    include/openbrew/defines.h \
+    include/openbrew/step.h \
+    include/openbrew/hlt.h \
+    include/openbrew/hop.h \
+    include/openbrew/fermentable.h \
+    src/brewconstantspopup.h \
+    src/brewstepdurationpopup.h \
+    src/tempprobecalibrationpopup.h \
+    src/hltpidsettingspopup.h \
+    src/bkpidsettingspopup.h \
+    src/audio_alarmsettingspopup.h \
+    src/brewerysettings.h
 
-FORMS    += mainwindow.ui \
-    brewconstantspopup.ui \
-    brewstepdurationpopup.ui \
-    tempprobecalibrationpopup.ui \
-    hltpidsettingspopup.ui \
-    bkpidsettingspopup.ui \
-    audio_alarmsettingspopup.ui
+FORMS    += src/mainwindow.ui \
+    src/brewconstantspopup.ui \
+    src/brewstepdurationpopup.ui \
+    src/tempprobecalibrationpopup.ui \
+    src/hltpidsettingspopup.ui \
+    src/bkpidsettingspopup.ui \
+    src/audio_alarmsettingspopup.ui
