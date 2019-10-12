@@ -2,6 +2,9 @@ FROM ubuntu:bionic
 
 USER root
 
+RUN apt-get update && \
+    apt-get -y install qt5-default 
+
 ADD myBrewLib/libmyBrewLib* /opt/myBrew/lib/
 ADD myBrewApp/myBrewApp /opt/myBrew/
 ADD myBrewTests/myBrewTests /opt/myBrew/
@@ -15,4 +18,4 @@ VOLUME /DB
 ENV LD_LIBRARY_PATH /opt/myBrew/lib/
 
 WORKDIR /opt/myBrew
-ENTRYPOINT ./myBrewApp
+#ENTRYPOINT ./myBrewApp
