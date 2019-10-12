@@ -13,12 +13,12 @@ pipeline {
         stage('package') {
             steps {
               sh 'mkdir package_build'
-              sh 'cp myBrew package_build'
+              sh 'cp myBrewApp/myBrew package_build'
+              sh 'cp myBrewLib/libmyBrewLib* package_build'
               sh 'cp images/* package_build'
               sh 'cp audio/* package_build'
               sh 'cd package_build'
               sh 'cd package_build; tar cvzf ../myBrew_v${BUILD_NUMBER}.tar.gz *'
-              sh 'rm -rf package_build'
             }
         }
         stage('deliver') {
@@ -41,6 +41,12 @@ pipeline {
           steps {
             sh 'cppcheck cppcheck --enable=all --inconclusive --xml --xml-version=2 . 2> cppcheck.xml'
             publishCppcheck pattern: 'cppcheck.xml'
+          }
+        }
+        stage('unit-tests') {
+          steps {
+            sh 'cd package_build; ./myBrewTests -xunitxml'
+            sh 'rm -rf package_build'
           }
         }
     }
