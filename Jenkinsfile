@@ -51,12 +51,12 @@ pipeline {
             sh 'rm -rf package_build'
           }
         }
-        post {
-          always{
-            xunit (
-                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-                tools: [ Custom(pattern: 'test_output.xml') ])
-          }
-        }
+    }
+    post {
+      always{
+        xunit (
+            thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+            tools: [ Custom(pattern: 'test_output.xml') ])
+      }
     }
 }
