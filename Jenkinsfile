@@ -56,7 +56,7 @@ pipeline {
       always{
         xunit (
             thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-            tools: [ CppUnit(pattern: 'test_output.xml') ])
+            tools: [ JUnit(pattern: 'test_output.xml') ])
       }
     }
 }
