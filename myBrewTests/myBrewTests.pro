@@ -18,7 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += \
-                                ../myBrewLib/src ../myBrewLib/include/pugixml ../myBrewLib/include/openbrew ../myBrewLib/include/qcustomplot
+              ../myBrewLib/src ../myBrewLib/include/pugixml ../myBrewLib/include/openbrew \
+              ../myBrewLib/include/qcustomplot ../myBrewLib
 
 LIBS += \
 		-L../myBrewLib \
