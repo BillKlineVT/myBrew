@@ -47,7 +47,7 @@ pipeline {
         stage('unit-tests') {
           steps {
             sh 'rm -rf /DB; mkdir /DB'
-            sh 'cd package_build; export LD_LIBRARY_PATH=. ; xvfb-run ./myBrewTests -o ../test_output.xml,xunitxml'
+            sh 'cd package_build; export LD_LIBRARY_PATH=. ; xvfb-run ./myBrewTests -o ../test_output.xml,xml'
             sh 'rm -rf package_build'
           }
         }
@@ -56,7 +56,7 @@ pipeline {
       always{
         xunit (
             thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
-            tools: [ JUnit(pattern: 'test_output.xml') ])
+            tools: [ QTestLib(pattern: 'test_output.xml') ])
       }
     }
 }
