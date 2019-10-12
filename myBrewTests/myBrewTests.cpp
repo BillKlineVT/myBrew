@@ -63,7 +63,7 @@ void myBrewTests::TestClockUpdate()
 
 void myBrewTests::TestChecklist()
 {
-    QCOMPARE(myBrewInstance.ui->L_Checklist_StartTime->text(), "<Time>");
+    QCOMPARE(myBrewInstance.ui->L_Checklist_StartTime->text(), QString("<Time>"));
     myBrewInstance.on_PB_Checklist_Start_clicked();
     QVERIFY2(myBrewInstance.ui->L_Checklist_StartTime->text() != "<Time>", "Checklist start label didn't update");
 }
