@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MYBREW_H
+#define MYBREW_H
 
 #include <QMainWindow>
 #include "SensorWorkerThread.h"
@@ -14,19 +14,22 @@
 #include "hltpidsettingspopup.h"
 #include "audio_alarmsettingspopup.h"
 #include <list>
+#include "myBrewLibGlobal.h"
 
 
 namespace Ui {
-class MainWindow;
+class myBrew;
 }
 
-class MainWindow : public QMainWindow
+class WIDGETSLIBSHARED_EXPORT myBrew : public QMainWindow
 {
     Q_OBJECT
+    //MAKE_TESTABLE(myBrew);
+    friend class myBrewTests;
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit myBrew(QWidget *parent = 0);
+    ~myBrew();
 
 private slots:
     void on_actionQuit_triggered();
@@ -284,7 +287,7 @@ private slots:
     void on_PB_Recipe_DeleteFermentable_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::myBrew *ui;
     QTimer *clock_timer;
     QTimer *elapsed_timer;
     QTimer *boil_timer;
@@ -383,4 +386,4 @@ private:
     bool HLT_AutoStart_TimeOfTempAchievedMode_enabled;
 };
 
-#endif // MAINWI
+#endif

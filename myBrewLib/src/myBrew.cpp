@@ -1,11 +1,12 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "myBrew.h"
+#include "ui_myBrew.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+myBrew::myBrew(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::myBrew)
 {
     ui->setupUi(this);
+    //qDebug() << "got here";
 
     // create all necessary timers
     this->clock_timer = new QTimer(this);
@@ -262,7 +263,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->HLT_AutoStart_StartTime = QDateTime();
 }
 
-MainWindow::~MainWindow()
+myBrew::~myBrew()
 {
     disconnect(&SENSOR_THREAD, SIGNAL(SensorWorker_READ_COMPLETE(double, double, double, double, double, double, double, bool, bool, bool, bool, bool, bool)),
              this, SLOT(SensorHandler(double, double, double, double, double, double, double, bool, bool, bool, bool, bool, bool)));
@@ -274,16 +275,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionQuit_triggered()
+void myBrew::on_actionQuit_triggered()
 {
    this->close();
 }
-void MainWindow::updateClockDisplay()
+void myBrew::updateClockDisplay()
 {
     //int time = QDateTime::currentDateTime().toLocalTime();
     ui->clock->setText(QDateTime::currentDateTime().toLocalTime().time().toString());
 }
-void MainWindow::updateElapsedDisplay()
+void myBrew::updateElapsedDisplay()
 {
     int elapsed_time = this->Checklist_StartTime->secsTo(QDateTime::currentDateTime());
     QTime deltaTime = QTime(0,0,0,0);
@@ -293,7 +294,7 @@ void MainWindow::updateElapsedDisplay()
     //qDebug() << "deltaTime: " << deltaTime.toString();
 }
 
-void MainWindow::updateBoilTimerDisplay()
+void myBrew::updateBoilTimerDisplay()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->BoilTimer_EndTime);
     //qDebug() << "boiltimer endtime " << this->BoilTimer_EndTime->time().toString();
@@ -338,7 +339,7 @@ void MainWindow::updateBoilTimerDisplay()
     }
 }
 
-void MainWindow::updatePostBoilTimerDisplay()
+void myBrew::updatePostBoilTimerDisplay()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->PostBoilTimer_EndTime);
     //qDebug() << "boiltimer endtime " << this->BoilTimer_EndTime->time().toString();
@@ -384,7 +385,7 @@ void MainWindow::updatePostBoilTimerDisplay()
     }
 }
 
-void MainWindow::updateMashTimerDisplay()
+void myBrew::updateMashTimerDisplay()
 {
     int numRows = ui->Table_Recipe_MashSteps->rowCount();
     QColor text_color;
@@ -479,7 +480,7 @@ void MainWindow::updateMashTimerDisplay()
     }
 }
 
-void MainWindow::updateVorlaufTimerDisplay()
+void myBrew::updateVorlaufTimerDisplay()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->VorlaufTimer_EndTime);
     if (time_remaining <= 0)
@@ -511,7 +512,7 @@ void MainWindow::updateVorlaufTimerDisplay()
     }
 }
 
-void MainWindow::updateCleanCyclePumpTimerDisplay()
+void myBrew::updateCleanCyclePumpTimerDisplay()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->CleanCyclePumpTimer_EndTime);
     if (time_remaining <= 0)
@@ -543,7 +544,7 @@ void MainWindow::updateCleanCyclePumpTimerDisplay()
     }
 }
 
-void MainWindow::updateTimer1Display()
+void myBrew::updateTimer1Display()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->Timer1_EndTime);
     //qDebug() << "timer1 endtime " << this->Timer1_EndTime->time().toString();
@@ -561,7 +562,7 @@ void MainWindow::updateTimer1Display()
     }
 }
 
-void MainWindow::updateTimer2Display()
+void myBrew::updateTimer2Display()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->Timer2_EndTime);
     //qDebug() << "timer2 endtime " << this->Timer2_EndTime->time().toString();
@@ -579,7 +580,7 @@ void MainWindow::updateTimer2Display()
     }
 }
 
-void MainWindow::updateTimer3Display()
+void myBrew::updateTimer3Display()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->Timer3_EndTime);
     //qDebug() << "timer3 endtime " << this->Timer3_EndTime->time().toString();
@@ -597,7 +598,7 @@ void MainWindow::updateTimer3Display()
     }
 }
 
-void MainWindow::updateTimer4Display()
+void myBrew::updateTimer4Display()
 {
     int time_remaining = QDateTime::currentDateTime().secsTo(*this->Timer4_EndTime);
     //qDebug() << "timer4 endtime " << this->Timer4_EndTime->time().toString();
@@ -615,7 +616,7 @@ void MainWindow::updateTimer4Display()
     }
 }
 
-void MainWindow::on_PB_Checklist_Start_clicked()
+void myBrew::on_PB_Checklist_Start_clicked()
 {
     this->Checklist_StartTime = new QDateTime(QDateTime::currentDateTime());
     QDateTime current;
@@ -640,7 +641,7 @@ void MainWindow::on_PB_Checklist_Start_clicked()
     ui->L_Checklist_FillHLT_FinishTime->setEnabled(true);
 }
 
-void MainWindow::on_CB_Checklist_FillHLT_clicked()
+void myBrew::on_CB_Checklist_FillHLT_clicked()
 {
     if(ui->CB_Checklist_FillHLT->isChecked())
     {
@@ -663,7 +664,7 @@ void MainWindow::on_CB_Checklist_FillHLT_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_HeatStrikeWater_clicked()
+void myBrew::on_CB_Checklist_HeatStrikeWater_clicked()
 {
     if(ui->CB_Checklist_HeatStrikeWater->isChecked())
     {        
@@ -686,7 +687,7 @@ void MainWindow::on_CB_Checklist_HeatStrikeWater_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_TransferStrikeWater_clicked()
+void myBrew::on_CB_Checklist_TransferStrikeWater_clicked()
 {
     if(ui->CB_Checklist_TransferStrikeWater->isChecked())
     {        
@@ -709,7 +710,7 @@ void MainWindow::on_CB_Checklist_TransferStrikeWater_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_DoughIn_clicked()
+void myBrew::on_CB_Checklist_DoughIn_clicked()
 {
     if(ui->CB_Checklist_DoughIn->isChecked())
     {
@@ -735,7 +736,7 @@ void MainWindow::on_CB_Checklist_DoughIn_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Mash_clicked()
+void myBrew::on_CB_Checklist_Mash_clicked()
 {
     if(ui->CB_Checklist_Mash->isChecked())
     {
@@ -758,7 +759,7 @@ void MainWindow::on_CB_Checklist_Mash_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_MashOut_clicked()
+void myBrew::on_CB_Checklist_MashOut_clicked()
 {
     if(ui->CB_Checklist_MashOut->isChecked())
     {
@@ -780,7 +781,7 @@ void MainWindow::on_CB_Checklist_MashOut_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_BatchSparge1_clicked()
+void myBrew::on_CB_Checklist_BatchSparge1_clicked()
 {
     if(ui->CB_Checklist_BatchSparge1->isChecked())
     {
@@ -803,7 +804,7 @@ void MainWindow::on_CB_Checklist_BatchSparge1_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Vorlauf1_clicked()
+void myBrew::on_CB_Checklist_Vorlauf1_clicked()
 {
     if(ui->CB_Checklist_Vorlauf1->isChecked())
     {
@@ -826,7 +827,7 @@ void MainWindow::on_CB_Checklist_Vorlauf1_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_BatchSparge2_clicked()
+void myBrew::on_CB_Checklist_BatchSparge2_clicked()
 {
     if(ui->CB_Checklist_BatchSparge2->isChecked())
     {
@@ -849,7 +850,7 @@ void MainWindow::on_CB_Checklist_BatchSparge2_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Vorlauf2_clicked()
+void myBrew::on_CB_Checklist_Vorlauf2_clicked()
 {
     if(ui->CB_Checklist_Vorlauf2->isChecked())
     {
@@ -875,7 +876,7 @@ void MainWindow::on_CB_Checklist_Vorlauf2_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Boil_clicked()
+void myBrew::on_CB_Checklist_Boil_clicked()
 {
     if(ui->CB_Checklist_Boil->isChecked())
     {
@@ -900,7 +901,7 @@ void MainWindow::on_CB_Checklist_Boil_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Whirlpool_clicked()
+void myBrew::on_CB_Checklist_Whirlpool_clicked()
 {
     if(ui->CB_Checklist_Whirlpool->isChecked())
     {
@@ -923,7 +924,7 @@ void MainWindow::on_CB_Checklist_Whirlpool_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Chill_clicked()
+void myBrew::on_CB_Checklist_Chill_clicked()
 {
     if(ui->CB_Checklist_Chill->isChecked())
     {
@@ -948,7 +949,7 @@ void MainWindow::on_CB_Checklist_Chill_clicked()
     }
 }
 
-void MainWindow::on_CB_Checklist_Clean_clicked()
+void myBrew::on_CB_Checklist_Clean_clicked()
 {
     if(ui->CB_Checklist_Clean->isChecked())
     {
@@ -967,7 +968,7 @@ void MainWindow::on_CB_Checklist_Clean_clicked()
     }
 }
 
-void MainWindow::calculate_ETC()
+void myBrew::calculate_ETC()
 {
     double ETC_minutes = 0.0;
     if(!ui->CB_Checklist_FillHLT->isChecked())
@@ -1045,19 +1046,19 @@ void MainWindow::calculate_ETC()
     ui->L_ETC_Time_Display->setText(ETC_Time->toLocalTime().time().toString());
 }
 
-void MainWindow::clear_and_disable_label(QLabel* label, QString new_label_text, bool enable_disable)
+void myBrew::clear_and_disable_label(QLabel* label, QString new_label_text, bool enable_disable)
 {
     label->setEnabled(enable_disable);
     label->setText(new_label_text);
 }
 
-void MainWindow::clear_and_disable_checkbox(QCheckBox* checkbox, bool checked, bool enable_disable)
+void myBrew::clear_and_disable_checkbox(QCheckBox* checkbox, bool checked, bool enable_disable)
 {
     checkbox->setEnabled(enable_disable);
     checkbox->setChecked(checked);
 }
 
-void MainWindow::on_PB_Checklist_Reset_clicked()
+void myBrew::on_PB_Checklist_Reset_clicked()
 {
     // reset all on this page to enabled and zero out times
     ui->PB_Checklist_Start->setEnabled(true);
@@ -1109,7 +1110,7 @@ void MainWindow::on_PB_Checklist_Reset_clicked()
     ui->L_ETC_Time_Display->setText("<Time>");
 }
 
-void MainWindow::on_LE_Recipe_BoilTime_editingFinished()
+void myBrew::on_LE_Recipe_BoilTime_editingFinished()
 {
     //set boil timer based on recipe boil time entry
     ui->LE_Recipe_BoilTime->text().toInt();
@@ -1121,7 +1122,7 @@ void MainWindow::on_LE_Recipe_BoilTime_editingFinished()
     ui->L_Boil_BoilTimer->setText(timer.toString());
 }
 
-void MainWindow::on_PB_Boil_BoilTimer_Start_clicked()
+void myBrew::on_PB_Boil_BoilTimer_Start_clicked()
 {
     this->BoilTimer_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->BoilTimer_EndTime = new QDateTime(this->BoilTimer_StartTime->addSecs(ui->LE_Recipe_BoilTime->text().toInt()*60));
@@ -1136,13 +1137,13 @@ void MainWindow::on_PB_Boil_BoilTimer_Start_clicked()
     this->boil_timer->start(1000);
 }
 
-void MainWindow::on_PB_Boil_BoilTimer_Stop_clicked()
+void myBrew::on_PB_Boil_BoilTimer_Stop_clicked()
 {
     this->boil_timer->stop();
     this->hop_timer_end.clear();
 }
 
-void MainWindow::on_PB_Recipe_AddHop_clicked()
+void myBrew::on_PB_Recipe_AddHop_clicked()
 {
     int numRows_config = ui->Table_Recipe_HopAdditions->rowCount();
     //ui->Table_Recipe_HopAdditions->setRowCount(numRows + 1);
@@ -1190,13 +1191,13 @@ void MainWindow::on_PB_Recipe_AddHop_clicked()
 
 }
 
-void MainWindow::on_PB_MLT_MashTimer_Start_clicked()
+void myBrew::on_PB_MLT_MashTimer_Start_clicked()
 {
     connect(this->mash_timer, SIGNAL(timeout()), this, SLOT(updateMashTimerDisplay()));
     this->mash_timer->start(1000);
 }
 
-void MainWindow::on_PB_MLT_VorlaufTimer_Start_clicked()
+void myBrew::on_PB_MLT_VorlaufTimer_Start_clicked()
 {
     this->VorlaufTimer_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->VorlaufTimer_EndTime = new QDateTime(this->VorlaufTimer_StartTime->addSecs(this->BrewConstantsPopup_Window.default_vorlauf_time*60));
@@ -1207,7 +1208,7 @@ void MainWindow::on_PB_MLT_VorlaufTimer_Start_clicked()
 
 }
 
-void MainWindow::on_PB_Recipe_AddStep_clicked()
+void myBrew::on_PB_Recipe_AddStep_clicked()
 {
     int numRows_config = ui->Table_Recipe_MashSteps->rowCount();
 
@@ -1271,12 +1272,12 @@ void MainWindow::on_PB_Recipe_AddStep_clicked()
 
 }
 
-void MainWindow::on_PB_MLT_MashTimer_Stop_clicked()
+void myBrew::on_PB_MLT_MashTimer_Stop_clicked()
 {
     this->mash_timer->stop();
 }
 
-void MainWindow::on_PB_MLT_VorlaufTimer_Stop_clicked()
+void myBrew::on_PB_MLT_VorlaufTimer_Stop_clicked()
 {
     this->vorlauf_timer->stop();
     if (this->GPIO_18_val != 0 && ui->RB_MLT_VorlaufTimer_Auto->isChecked())
@@ -1287,7 +1288,7 @@ void MainWindow::on_PB_MLT_VorlaufTimer_Stop_clicked()
     }
 }
 
-void MainWindow::SensorHandler(double hlt_temp, double hlt_pwm, double mlt_temp, double boil_temp, double chill_temp, double boil_level, double hlt_level, bool HLT_VALID, bool MASH_VALID, bool BOIL_VALID, bool CHILL_VALID, bool BOIL_LEVEL_VALID, bool HLT_LEVEL_VALID)
+void myBrew::SensorHandler(double hlt_temp, double hlt_pwm, double mlt_temp, double boil_temp, double chill_temp, double boil_level, double hlt_level, bool HLT_VALID, bool MASH_VALID, bool BOIL_VALID, bool CHILL_VALID, bool BOIL_LEVEL_VALID, bool HLT_LEVEL_VALID)
 {
     // update Calibration chart
     hlt_temp += this->TempProbeCalibrationPopup_Window.HLT_TempCorrection;
@@ -1562,7 +1563,7 @@ void MainWindow::SensorHandler(double hlt_temp, double hlt_pwm, double mlt_temp,
 
 }
 
-QTime MainWindow::calculate_HeatTime(double setpoint, double current_temp, double heating_rate_per_min)
+QTime myBrew::calculate_HeatTime(double setpoint, double current_temp, double heating_rate_per_min)
 {
     double delta_temp = setpoint - current_temp;
     if(delta_temp >0)
@@ -1580,22 +1581,22 @@ QTime MainWindow::calculate_HeatTime(double setpoint, double current_temp, doubl
     }
 }
 
-void MainWindow::HLT_PIDHandler(double setpoint, double P, double I, double D)
+void myBrew::HLT_PIDHandler(double setpoint, double P, double I, double D)
 {
 
 }
 
-void MainWindow::BK_PIDHandler(double setpoint, double P, double I, double D)
+void myBrew::BK_PIDHandler(double setpoint, double P, double I, double D)
 {
 
 }
 
-void MainWindow::createChecklist_DB()
+void myBrew::createChecklist_DB()
 {
     //qDebug() << "creating checklist db";
 }
 
-void MainWindow::insertChecklist_DB_Entry(QString timestamp_local, int timestamp_epoch, QString Checklist_Entry)
+void myBrew::insertChecklist_DB_Entry(QString timestamp_local, int timestamp_epoch, QString Checklist_Entry)
 {
 
     //qDebug() << "inserting checklist entry: " << Checklist_Entry <<" local: " << timestamp_local <<" epoch: "<< timestamp_epoch;
@@ -1620,7 +1621,7 @@ void MainWindow::insertChecklist_DB_Entry(QString timestamp_local, int timestamp
     }
 }
 
-void MainWindow::update_GPIO_Settings()
+void myBrew::update_GPIO_Settings()
 {
    // if (this->system_db->isOpen())
   //  {
@@ -1652,7 +1653,7 @@ void MainWindow::update_GPIO_Settings()
   //  }
 }
 
-void MainWindow::update_HLT_PID_Settings()
+void myBrew::update_HLT_PID_Settings()
 {
     // correct for temp sensor calibration
     double PID_set_temp_corrected = this->HLT_PID_setpoint - this->TempProbeCalibrationPopup_Window.HLT_TempCorrection;
@@ -1695,7 +1696,7 @@ void MainWindow::update_HLT_PID_Settings()
         }
 }
 
-void MainWindow::update_BK_PID_Settings()
+void myBrew::update_BK_PID_Settings()
 {
     // correct for temp sensor calibration
     double PID_set_temp_corrected = this->BK_PID_setpoint - this->TempProbeCalibrationPopup_Window.BK_TempCorrection;
@@ -1722,7 +1723,7 @@ void MainWindow::update_BK_PID_Settings()
         }
 }
 
-/*void MainWindow::on_LE_Recipe_MashDuration_editingFinished()
+/*void myBrew::on_LE_Recipe_MashDuration_editingFinished()
 {
     int hours = ui->LE_Recipe_MashDuration->text().toInt()/60;
     int minutes = ui->LE_Recipe_MashDuration->text().toInt()-(hours*60);
@@ -1730,7 +1731,7 @@ void MainWindow::update_BK_PID_Settings()
     ui->L_MLT_MashTimer->setText(timer.toString());
 }*/
 
-/*void MainWindow::on_DSB_Config_VorlaufTime_editingFinished()
+/*void myBrew::on_DSB_Config_VorlaufTime_editingFinished()
 {
     //int minutes = ui->DSB_Config_VorlaufTime->value();
     int minutes = this->BrewConstantsPopup_Window.default_vorlauf_time;
@@ -1738,7 +1739,7 @@ void MainWindow::update_BK_PID_Settings()
     ui->L_MLT_VorlaufTimer->setText(timer.toString());
 }*/
 
-void MainWindow::on_PB_HLT_UpdatePID_clicked()
+void myBrew::on_PB_HLT_UpdatePID_clicked()
 {
     this->HLT_PID_setpoint = ui->LE_HLT_PID_SetTemp->text().toDouble();
     //this->HLT_PID_P_val = ui->LE_HLT_PID_PVal->text().toDouble();
@@ -1749,7 +1750,7 @@ void MainWindow::on_PB_HLT_UpdatePID_clicked()
     ui->L_HLT_SetTemp_Main->setText(QString::number(this->HLT_PID_setpoint));
 }
 
-/*void MainWindow::on_PB_HLT_CaptureGroundTemp_clicked()
+/*void myBrew::on_PB_HLT_CaptureGroundTemp_clicked()
 {
     //ui->DSB_Config_GroundWaterTemp->setValue(ui->L_HLT_CurrentTemp->text().toDouble());
     ui->L_HLT_GroundWaterTemp->setText(ui->L_HLT_CurrentTemp->text());
@@ -1775,13 +1776,13 @@ void MainWindow::on_PB_HLT_UpdatePID_clicked()
     }
 }*/
 
-void MainWindow::on_PB_Timer1_Set_clicked()
+void myBrew::on_PB_Timer1_Set_clicked()
 {
     QTime qtime_remaining = QTime(ui->SB_Timer1_Hours->value(),ui->SB_Timer1_Minutes->value(),0,0);
     ui->L_Timer1->setText(qtime_remaining.toString());
 }
 
-void MainWindow::on_PB_Timer1_Start_clicked()
+void myBrew::on_PB_Timer1_Start_clicked()
 {
     this->Timer1_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->Timer1_EndTime = new QDateTime(this->Timer1_StartTime->addSecs(ui->SB_Timer1_Hours->text().toInt()*60*60+ui->SB_Timer1_Minutes->text().toInt()*60));
@@ -1789,18 +1790,18 @@ void MainWindow::on_PB_Timer1_Start_clicked()
     this->timer1_timer->start(1000);
 }
 
-void MainWindow::on_PB_Timer1_Stop_clicked()
+void myBrew::on_PB_Timer1_Stop_clicked()
 {
     this->timer1_timer->stop();
 }
 
-void MainWindow::on_PB_Timer2_Set_clicked()
+void myBrew::on_PB_Timer2_Set_clicked()
 {
     QTime qtime_remaining = QTime(ui->SB_Timer2_Hours->value(),ui->SB_Timer2_Minutes->value(),0,0);
     ui->L_Timer2->setText(qtime_remaining.toString());
 }
 
-void MainWindow::on_PB_Timer2_Start_clicked()
+void myBrew::on_PB_Timer2_Start_clicked()
 {
     this->Timer2_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->Timer2_EndTime = new QDateTime(this->Timer2_StartTime->addSecs(ui->SB_Timer2_Hours->text().toInt()*60*60+ui->SB_Timer2_Minutes->text().toInt()*60));
@@ -1808,18 +1809,18 @@ void MainWindow::on_PB_Timer2_Start_clicked()
     this->timer2_timer->start(1000);
 }
 
-void MainWindow::on_PB_Timer2_Stop_clicked()
+void myBrew::on_PB_Timer2_Stop_clicked()
 {
     this->timer2_timer->stop();
 }
 
-void MainWindow::on_PB_Timer3_Set_clicked()
+void myBrew::on_PB_Timer3_Set_clicked()
 {
     QTime qtime_remaining = QTime(ui->SB_Timer3_Hours->value(),ui->SB_Timer3_Minutes->value(),0,0);
     ui->L_Timer3->setText(qtime_remaining.toString());
 }
 
-void MainWindow::on_PB_Timer3_Start_clicked()
+void myBrew::on_PB_Timer3_Start_clicked()
 {
     this->Timer3_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->Timer3_EndTime = new QDateTime(this->Timer3_StartTime->addSecs(ui->SB_Timer3_Hours->text().toInt()*60*60+ui->SB_Timer3_Minutes->text().toInt()*60));
@@ -1827,18 +1828,18 @@ void MainWindow::on_PB_Timer3_Start_clicked()
     this->timer3_timer->start(1000);
 }
 
-void MainWindow::on_PB_Timer3_Stop_clicked()
+void myBrew::on_PB_Timer3_Stop_clicked()
 {
     this->timer3_timer->stop();
 }
 
-void MainWindow::on_PB_Timer4_Set_clicked()
+void myBrew::on_PB_Timer4_Set_clicked()
 {
     QTime qtime_remaining = QTime(ui->SB_Timer4_Hours->value(),ui->SB_Timer4_Minutes->value(),0,0);
     ui->L_Timer4->setText(qtime_remaining.toString());
 }
 
-void MainWindow::on_PB_Timer4_Start_clicked()
+void myBrew::on_PB_Timer4_Start_clicked()
 {
     this->Timer4_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->Timer4_EndTime = new QDateTime(this->Timer4_StartTime->addSecs(ui->SB_Timer4_Hours->text().toInt()*60*60+ui->SB_Timer4_Minutes->text().toInt()*60));
@@ -1846,17 +1847,17 @@ void MainWindow::on_PB_Timer4_Start_clicked()
     this->timer4_timer->start(1000);
 }
 
-void MainWindow::on_PB_Timer4_Stop_clicked()
+void myBrew::on_PB_Timer4_Stop_clicked()
 {
     this->timer4_timer->stop();
 }
 
-/*void MainWindow::on_DSB_Config_TempDropHLTtoHERMS_editingFinished()
+/*void myBrew::on_DSB_Config_TempDropHLTtoHERMS_editingFinished()
 {
 
 }*/
 
-void MainWindow::on_CB_HLT_TimeRangeScale_currentIndexChanged(int index)
+void myBrew::on_CB_HLT_TimeRangeScale_currentIndexChanged(int index)
 {
     //qDebug() << "index: " << index;
     switch(index)
@@ -1897,7 +1898,7 @@ void MainWindow::on_CB_HLT_TimeRangeScale_currentIndexChanged(int index)
     ui->customPlot_HLT->replot();
 }
 
-void MainWindow::on_CB_MLT_TimeRangeScale_currentIndexChanged(int index)
+void myBrew::on_CB_MLT_TimeRangeScale_currentIndexChanged(int index)
 {
     //qDebug() << "index: " << index;
     switch(index)
@@ -1938,7 +1939,7 @@ void MainWindow::on_CB_MLT_TimeRangeScale_currentIndexChanged(int index)
     ui->customPlot_MLT->replot();
 }
 
-void MainWindow::on_CB_BK_TimeRangeScale_currentIndexChanged(int index)
+void myBrew::on_CB_BK_TimeRangeScale_currentIndexChanged(int index)
 {
     //qDebug() << "index: " << index;
     switch(index)
@@ -1979,7 +1980,7 @@ void MainWindow::on_CB_BK_TimeRangeScale_currentIndexChanged(int index)
     ui->customPlot_BK->replot();
 }
 
-void MainWindow::on_CB_Chill_TimeRangeScale_currentIndexChanged(int index)
+void myBrew::on_CB_Chill_TimeRangeScale_currentIndexChanged(int index)
 {
     //qDebug() << "index: " << index;
     switch(index)
@@ -2020,7 +2021,7 @@ void MainWindow::on_CB_Chill_TimeRangeScale_currentIndexChanged(int index)
     ui->customPlot_Chill->replot();
 }
 
-void MainWindow::on_PB_MLT_UpdateHLTPIDSetTemp_clicked()
+void myBrew::on_PB_MLT_UpdateHLTPIDSetTemp_clicked()
 {
     double step_temp = ui->DSB_MLT_SetMashTemp->value();
     ui->L_MLT_SetTemp->setText(QString::number(step_temp));
@@ -2034,7 +2035,7 @@ void MainWindow::on_PB_MLT_UpdateHLTPIDSetTemp_clicked()
     ui->LE_HLT_PID_SetTemp->setText(QString::number(this->HLT_PID_setpoint));
 }
 
-void MainWindow::on_r_StirMotor_ON_clicked()
+void myBrew::on_r_StirMotor_ON_clicked()
 {
     if (this->GPIO_22_val != 1)
     {
@@ -2047,7 +2048,7 @@ void MainWindow::on_r_StirMotor_ON_clicked()
     }
 }
 
-void MainWindow::on_r_StirMotor_OFF_clicked()
+void myBrew::on_r_StirMotor_OFF_clicked()
 {
     if (this->GPIO_22_val != 0)
     {
@@ -2060,12 +2061,12 @@ void MainWindow::on_r_StirMotor_OFF_clicked()
     }
 }
 
-void MainWindow::on_LE_Recipe_PitchTemp_editingFinished()
+void myBrew::on_LE_Recipe_PitchTemp_editingFinished()
 {
     ui->L_Chill_YeastPitchTemp->setText(ui->LE_Recipe_PitchTemp->text());
 }
 
-/*void MainWindow::on_Table_Config_TempProbeCalibration_cellChanged(int row, int column)
+/*void myBrew::on_Table_Config_TempProbeCalibration_cellChanged(int row, int column)
 {
     // check if it was the correction column
     if(column == 0)
@@ -2090,7 +2091,7 @@ void MainWindow::on_LE_Recipe_PitchTemp_editingFinished()
     }
 }*/
 
-void MainWindow::on_HLT_Auto_Scale_Enable_ChkBox_clicked()
+void myBrew::on_HLT_Auto_Scale_Enable_ChkBox_clicked()
 {
     // rescale value (vertical) axis to fit the current data:
     if(ui->HLT_Auto_Scale_Enable_ChkBox->isChecked())
@@ -2104,7 +2105,7 @@ void MainWindow::on_HLT_Auto_Scale_Enable_ChkBox_clicked()
     ui->customPlot_HLT->replot();
 }
 
-void MainWindow::on_CB_Logs_TimeRangeScale_currentIndexChanged(int index)
+void myBrew::on_CB_Logs_TimeRangeScale_currentIndexChanged(int index)
 {
     //qDebug() << "index: " << index;
     switch(index)
@@ -2145,7 +2146,7 @@ void MainWindow::on_CB_Logs_TimeRangeScale_currentIndexChanged(int index)
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_Auto_Scale_Enable_ChkBox_clicked()
+void myBrew::on_Logs_Auto_Scale_Enable_ChkBox_clicked()
 {
     // rescale value (vertical) axis to fit the current data:
     if(ui->Logs_Auto_Scale_Enable_ChkBox->isChecked())
@@ -2163,7 +2164,7 @@ void MainWindow::on_Logs_Auto_Scale_Enable_ChkBox_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_MLT_Auto_Scale_Enable_ChkBox_clicked()
+void myBrew::on_MLT_Auto_Scale_Enable_ChkBox_clicked()
 {
     // rescale value (vertical) axis to fit the current data:
     if(ui->MLT_Auto_Scale_Enable_ChkBox->isChecked())
@@ -2177,7 +2178,7 @@ void MainWindow::on_MLT_Auto_Scale_Enable_ChkBox_clicked()
     ui->customPlot_MLT->replot();
 }
 
-void MainWindow::on_Boil_Auto_Scale_Enable_ChkBox_clicked()
+void myBrew::on_Boil_Auto_Scale_Enable_ChkBox_clicked()
 {
     // rescale value (vertical) axis to fit the current data:
     if(ui->Boil_Auto_Scale_Enable_ChkBox->isChecked())
@@ -2191,7 +2192,7 @@ void MainWindow::on_Boil_Auto_Scale_Enable_ChkBox_clicked()
     ui->customPlot_BK->replot();
 }
 
-void MainWindow::on_Chill_Auto_Scale_Enable_ChkBox_clicked()
+void myBrew::on_Chill_Auto_Scale_Enable_ChkBox_clicked()
 {
     // rescale value (vertical) axis to fit the current data:
     if(ui->Chill_Auto_Scale_Enable_ChkBox->isChecked())
@@ -2205,7 +2206,7 @@ void MainWindow::on_Chill_Auto_Scale_Enable_ChkBox_clicked()
     ui->customPlot_Chill->replot();
 }
 
-void MainWindow::on_PB_Logs_Browse_SaveLogAs_clicked()
+void myBrew::on_PB_Logs_Browse_SaveLogAs_clicked()
 {
     this->CSV_fileName = QFileDialog::getSaveFileName(this,
         tr("Save Data"), "/home/pi/"+this->CSV_fileName, tr("Comma Separated Values (*.csv)"));
@@ -2213,7 +2214,7 @@ void MainWindow::on_PB_Logs_Browse_SaveLogAs_clicked()
     ui->LE_Logs_SaveLogAs->setText(this->CSV_fileName);
 }
 
-void MainWindow::on_PB_Logs_Save_SaveLogAs_clicked()
+void myBrew::on_PB_Logs_Save_SaveLogAs_clicked()
 {
     // Convert database to csv specified in filename dialog
     this->CSV_fileName.chop(4);
@@ -2227,7 +2228,7 @@ void MainWindow::on_PB_Logs_Save_SaveLogAs_clicked()
     this->export_db_table("brewday_log");
 }
 
-void MainWindow::export_db_table(QString table_name)
+void myBrew::export_db_table(QString table_name)
 {
 
     QString CSV_file_to_create = this->CSV_fileName + "_" + table_name + ".csv";
@@ -2247,7 +2248,7 @@ void MainWindow::export_db_table(QString table_name)
     QProcess::execute(command.toUtf8().constData());
 }
 
-void MainWindow::on_HLT_Temp_Enable_ChkBox_HLT_clicked()
+void myBrew::on_HLT_Temp_Enable_ChkBox_HLT_clicked()
 {
     if(ui->HLT_Temp_Enable_ChkBox_HLT->isChecked())
         ui->customPlot_HLT->graph(0)->setVisible(true);
@@ -2256,7 +2257,7 @@ void MainWindow::on_HLT_Temp_Enable_ChkBox_HLT_clicked()
     ui->customPlot_HLT->replot();
 }
 
-void MainWindow::on_HLT_PWM_Enable_ChkBox_clicked()
+void myBrew::on_HLT_PWM_Enable_ChkBox_clicked()
 {
     if(ui->HLT_PWM_Enable_ChkBox->isChecked())
         ui->customPlot_HLT->graph(1)->setVisible(true);
@@ -2265,7 +2266,7 @@ void MainWindow::on_HLT_PWM_Enable_ChkBox_clicked()
     ui->customPlot_HLT->replot();
 }
 
-void MainWindow::on_MLT_Temp_Enable_ChkBox_HERMS_clicked()
+void myBrew::on_MLT_Temp_Enable_ChkBox_HERMS_clicked()
 {
     if(ui->MLT_Temp_Enable_ChkBox_HERMS->isChecked())
         ui->customPlot_MLT->graph(0)->setVisible(true);
@@ -2274,7 +2275,7 @@ void MainWindow::on_MLT_Temp_Enable_ChkBox_HERMS_clicked()
     ui->customPlot_MLT->replot();
 }
 
-void MainWindow::on_MLT_Temp_Enable_ChkBox_HLT_clicked()
+void myBrew::on_MLT_Temp_Enable_ChkBox_HLT_clicked()
 {
     if(ui->MLT_Temp_Enable_ChkBox_HLT->isChecked())
         ui->customPlot_MLT->graph(1)->setVisible(true);
@@ -2283,7 +2284,7 @@ void MainWindow::on_MLT_Temp_Enable_ChkBox_HLT_clicked()
     ui->customPlot_MLT->replot();
 }
 
-void MainWindow::on_Boil_Temp_Enable_ChkBox_Boil_clicked()
+void myBrew::on_Boil_Temp_Enable_ChkBox_Boil_clicked()
 {
     if(ui->Boil_Temp_Enable_ChkBox_Boil->isChecked())
         ui->customPlot_BK->graph(0)->setVisible(true);
@@ -2292,7 +2293,7 @@ void MainWindow::on_Boil_Temp_Enable_ChkBox_Boil_clicked()
     ui->customPlot_BK->replot();
 }
 
-void MainWindow::on_Boil_PWM_Enable_ChkBox_clicked()
+void myBrew::on_Boil_PWM_Enable_ChkBox_clicked()
 {
     if(ui->Boil_PWM_Enable_ChkBox->isChecked())
         ui->customPlot_BK->graph(1)->setVisible(true);
@@ -2301,7 +2302,7 @@ void MainWindow::on_Boil_PWM_Enable_ChkBox_clicked()
     ui->customPlot_BK->replot();
 }
 
-void MainWindow::on_Chill_Temp_Enable_ChkBox_Chill_clicked()
+void myBrew::on_Chill_Temp_Enable_ChkBox_Chill_clicked()
 {
     if(ui->Chill_Temp_Enable_ChkBox_Chill->isChecked())
         ui->customPlot_Chill->graph(0)->setVisible(true);
@@ -2310,7 +2311,7 @@ void MainWindow::on_Chill_Temp_Enable_ChkBox_Chill_clicked()
     ui->customPlot_Chill->replot();
 }
 
-void MainWindow::on_Chill_Temp_Enable_ChkBox_Boil_clicked()
+void myBrew::on_Chill_Temp_Enable_ChkBox_Boil_clicked()
 {
     if(ui->Chill_Temp_Enable_ChkBox_Boil->isChecked())
         ui->customPlot_Chill->graph(1)->setVisible(true);
@@ -2319,7 +2320,7 @@ void MainWindow::on_Chill_Temp_Enable_ChkBox_Boil_clicked()
     ui->customPlot_Chill->replot();
 }
 
-void MainWindow::on_Logs_Temp_Enable_ChkBox_HLT_clicked()
+void myBrew::on_Logs_Temp_Enable_ChkBox_HLT_clicked()
 {
     if(ui->Logs_Temp_Enable_ChkBox_HLT->isChecked())
         ui->customPlot_Logs->graph(0)->setVisible(true);
@@ -2328,7 +2329,7 @@ void MainWindow::on_Logs_Temp_Enable_ChkBox_HLT_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_PWM_Enable_ChkBox_clicked()
+void myBrew::on_Logs_PWM_Enable_ChkBox_clicked()
 {
     if(ui->Logs_PWM_Enable_ChkBox->isChecked())
         ui->customPlot_Logs->graph(1)->setVisible(true);
@@ -2337,7 +2338,7 @@ void MainWindow::on_Logs_PWM_Enable_ChkBox_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_Temp_Enable_ChkBox_HERMS_clicked()
+void myBrew::on_Logs_Temp_Enable_ChkBox_HERMS_clicked()
 {
     if(ui->Logs_Temp_Enable_ChkBox_HERMS->isChecked())
         ui->customPlot_Logs->graph(2)->setVisible(true);
@@ -2346,7 +2347,7 @@ void MainWindow::on_Logs_Temp_Enable_ChkBox_HERMS_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_Temp_Enable_ChkBox_Boil_clicked()
+void myBrew::on_Logs_Temp_Enable_ChkBox_Boil_clicked()
 {
     if(ui->Logs_Temp_Enable_ChkBox_Boil->isChecked())
         ui->customPlot_Logs->graph(3)->setVisible(true);
@@ -2355,7 +2356,7 @@ void MainWindow::on_Logs_Temp_Enable_ChkBox_Boil_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_PWM_Enable_ChkBox_2_clicked()
+void myBrew::on_Logs_PWM_Enable_ChkBox_2_clicked()
 {
     if(ui->Logs_PWM_Enable_ChkBox_2->isChecked())
         ui->customPlot_Logs->graph(4)->setVisible(true);
@@ -2364,7 +2365,7 @@ void MainWindow::on_Logs_PWM_Enable_ChkBox_2_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::on_Logs_Temp_Enable_ChkBox_Chill_clicked()
+void myBrew::on_Logs_Temp_Enable_ChkBox_Chill_clicked()
 {
     if(ui->Logs_Temp_Enable_ChkBox_Chill->isChecked())
         ui->customPlot_Logs->graph(5)->setVisible(true);
@@ -2373,7 +2374,7 @@ void MainWindow::on_Logs_Temp_Enable_ChkBox_Chill_clicked()
     ui->customPlot_Logs->replot();
 }
 
-void MainWindow::soundAlarm(QString alarmText)
+void myBrew::soundAlarm(QString alarmText)
 {
     QString command = "omxplayer "+this->Alarm_SoundFile + "&";
     //QString command = "aplay "+this->Alarm_SoundFile +"&";
@@ -2382,20 +2383,20 @@ void MainWindow::soundAlarm(QString alarmText)
     ui->PB_AlarmText->setStyleSheet("QPushButton { color : red; }");
 }
 
-/*void MainWindow::on_PB_Config_AlarmBrowse_clicked()
+/*void myBrew::on_PB_Config_AlarmBrowse_clicked()
 {
     this->Alarm_SoundFile = QFileDialog::getOpenFileName(this,
         tr("Alarm Sound File"), "/home/pi/"+this->Alarm_SoundFile, tr("All Files (*.*)"));
     ui->LE_Config_AlarmSoundFile->setText(this->Alarm_SoundFile);
 }*/
 
-void MainWindow::on_PB_AlarmText_clicked()
+void myBrew::on_PB_AlarmText_clicked()
 {
     ui->PB_AlarmText->setText("NONE");
     ui->PB_AlarmText->setStyleSheet("QPushButton { color : green; }");
 }
 
-void MainWindow::on_PB_Recipe_ImportBeerXMLRecipe_Browse_clicked()
+void myBrew::on_PB_Recipe_ImportBeerXMLRecipe_Browse_clicked()
 {
     ui->CB_MLT_MashHopAddition->setEnabled(false);
     ui->CB_MLT_MashHopAddition->setVisible(false);
@@ -2493,25 +2494,25 @@ void MainWindow::on_PB_Recipe_ImportBeerXMLRecipe_Browse_clicked()
     ui->CB_MLT_SpargeAmount->setEnabled(true);
 }
 
-double MainWindow::CtoF(double celsius)
+double myBrew::CtoF(double celsius)
 {
     double fahrenheit = celsius*9/5 + 32;
     return fahrenheit;
 }
 
-double MainWindow::LtoGal(double liters)
+double myBrew::LtoGal(double liters)
 {
     double gallons = liters*0.26417053;
     return gallons;
 }
 
-double MainWindow::KGtoLB(double kilograms)
+double myBrew::KGtoLB(double kilograms)
 {
     double pounds = kilograms * 2.20462442;
     return pounds;
 }
 
-void MainWindow::on_PB_Recipe_AddFermentable_clicked()
+void myBrew::on_PB_Recipe_AddFermentable_clicked()
 {
     int numRows_config = ui->table_Recipe_Fermentables->rowCount();
 
@@ -2528,7 +2529,7 @@ void MainWindow::on_PB_Recipe_AddFermentable_clicked()
     ui->LE_Recipe_AddFermentable_Color->setText("");
 }
 
-void MainWindow::on_LE_Logs_PreBoilGravity_editingFinished()
+void myBrew::on_LE_Logs_PreBoilGravity_editingFinished()
 {
     qDebug() << "inserting brewday_log entry: Preboil gravity: " << ui->LE_Logs_PreBoilGravity->text();
 
@@ -2551,7 +2552,7 @@ void MainWindow::on_LE_Logs_PreBoilGravity_editingFinished()
     }
 }
 
-void MainWindow::on_PB_BK_SetForMashIn_clicked()
+void myBrew::on_PB_BK_SetForMashIn_clicked()
 {
     // set BK to strike temp (current method of heating strike water is in BK... may change later when BK is electric)
     ui->LE_BK_SetTemp->setText(ui->LE_Recipe_StrikeTemp->text());
@@ -2562,7 +2563,7 @@ void MainWindow::on_PB_BK_SetForMashIn_clicked()
     // update BK PID Settings (TODO)
 }
 
-void MainWindow::on_rb_HLT_PID_Enable_clicked()
+void myBrew::on_rb_HLT_PID_Enable_clicked()
 {
     if (ui->rb_HLT_PID_Enable->isChecked())
     {
@@ -2571,7 +2572,7 @@ void MainWindow::on_rb_HLT_PID_Enable_clicked()
     }
 }
 
-void MainWindow::on_rb_HLT_PID_Disable_clicked()
+void myBrew::on_rb_HLT_PID_Disable_clicked()
 {
     if (ui->rb_HLT_PID_Disable->isChecked())
     {
@@ -2580,7 +2581,7 @@ void MainWindow::on_rb_HLT_PID_Disable_clicked()
     }
 }
 
-void MainWindow::on_PB_BK_SetForMashIn_2_clicked()
+void myBrew::on_PB_BK_SetForMashIn_2_clicked()
 {
     // set BK to boil temp
     ui->LE_BK_SetTemp->setText(QString::number(this->BrewConstantsPopup_Window.boiling_temp));
@@ -2591,7 +2592,7 @@ void MainWindow::on_PB_BK_SetForMashIn_2_clicked()
     // update BK PID Settings (TODO)
 }
 
-void MainWindow::on_PB_BK_UpdatePID_clicked()
+void myBrew::on_PB_BK_UpdatePID_clicked()
 {
     this->BK_PID_setpoint = ui->LE_BK_SetTemp->text().toDouble();
 
@@ -2601,7 +2602,7 @@ void MainWindow::on_PB_BK_UpdatePID_clicked()
     ui->L_BK_SetTemp_Main->setText(ui->LE_BK_SetTemp->text());
 }
 
-void MainWindow::on_PB_Clean_PumpTimer_Start_clicked()
+void myBrew::on_PB_Clean_PumpTimer_Start_clicked()
 {
     this->CleanCyclePumpTimer_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->CleanCyclePumpTimer_EndTime = new QDateTime(this->CleanCyclePumpTimer_StartTime->addSecs(ui->SB_Clean_CycleTimeDuration->text().toInt()*60));
@@ -2609,7 +2610,7 @@ void MainWindow::on_PB_Clean_PumpTimer_Start_clicked()
     this->cleancyclepump_timer->start(1000);
 }
 
-void MainWindow::on_PB_Clean_PumpTimer_Stop_clicked()
+void myBrew::on_PB_Clean_PumpTimer_Stop_clicked()
 {
     this->cleancyclepump_timer->stop();
     if (this->GPIO_18_val != 0 && ui->RB_Clean_PumpTimer_Auto->isChecked())
@@ -2620,12 +2621,12 @@ void MainWindow::on_PB_Clean_PumpTimer_Stop_clicked()
     }
 }
 
-/*void MainWindow::on_DSB_Config_MashTimerStepStartThreshold_editingFinished()
+/*void myBrew::on_DSB_Config_MashTimerStepStartThreshold_editingFinished()
 {
     this->mash_timer_step_start_threshold_temp = ui->DSB_Config_MashTimerStepStartThreshold->value();
 }*/
 
-/*void MainWindow::on_PB_Config_BoilCal_Browse_clicked()
+/*void myBrew::on_PB_Config_BoilCal_Browse_clicked()
 {
     this->boil_csv_path = QFileDialog::getOpenFileName(this,
         tr("Boil Level Sensor Cal Data"), "/home/pi/", tr("CSV (*.csv)"));
@@ -2633,7 +2634,7 @@ void MainWindow::on_PB_Clean_PumpTimer_Stop_clicked()
     SENSOR_THREAD.SensorWorker_Load_CSV_Data(this->boil_csv_path,this->hlt_csv_path);
 }
 
-void MainWindow::on_PB_Config_HLTCal_Browse_clicked()
+void myBrew::on_PB_Config_HLTCal_Browse_clicked()
 {
     this->hlt_csv_path = QFileDialog::getOpenFileName(this,
         tr("HLT Level Sensor Cal Data"), "/home/pi/", tr("CSV (*.csv)"));
@@ -2641,7 +2642,7 @@ void MainWindow::on_PB_Config_HLTCal_Browse_clicked()
     SENSOR_THREAD.SensorWorker_Load_CSV_Data(this->boil_csv_path,this->hlt_csv_path);
 }*/
 
-void MainWindow::on_Chill_Temp_Enable_ChkBox_PitchTemp_clicked()
+void myBrew::on_Chill_Temp_Enable_ChkBox_PitchTemp_clicked()
 {
     if(ui->Chill_Temp_Enable_ChkBox_PitchTemp->isChecked())
         ui->customPlot_Chill->graph(2)->setVisible(true);
@@ -2650,7 +2651,7 @@ void MainWindow::on_Chill_Temp_Enable_ChkBox_PitchTemp_clicked()
     ui->customPlot_Chill->replot();
 }
 
-void MainWindow::on_Boil_SetTemp_Enable_ChkBox_clicked()
+void myBrew::on_Boil_SetTemp_Enable_ChkBox_clicked()
 {
     if(ui->Boil_SetTemp_Enable_ChkBox->isChecked())
         ui->customPlot_BK->graph(2)->setVisible(true);
@@ -2659,7 +2660,7 @@ void MainWindow::on_Boil_SetTemp_Enable_ChkBox_clicked()
     ui->customPlot_BK->replot();
 }
 
-void MainWindow::on_MLT_Temp_Enable_ChkBox_SetTemp_clicked()
+void myBrew::on_MLT_Temp_Enable_ChkBox_SetTemp_clicked()
 {
     if(ui->MLT_Temp_Enable_ChkBox_SetTemp->isChecked())
         ui->customPlot_MLT->graph(2)->setVisible(true);
@@ -2668,7 +2669,7 @@ void MainWindow::on_MLT_Temp_Enable_ChkBox_SetTemp_clicked()
     ui->customPlot_MLT->replot();
 }
 
-void MainWindow::on_HLT_SetTemp_Enable_ChkBox_clicked()
+void myBrew::on_HLT_SetTemp_Enable_ChkBox_clicked()
 {
     if(ui->HLT_SetTemp_Enable_ChkBox->isChecked())
         ui->customPlot_HLT->graph(2)->setVisible(true);
@@ -2677,13 +2678,13 @@ void MainWindow::on_HLT_SetTemp_Enable_ChkBox_clicked()
     ui->customPlot_HLT->replot();
 }
 
-void MainWindow::on_PB_Settings_BrewConstants_clicked()
+void myBrew::on_PB_Settings_BrewConstants_clicked()
 {
     BrewConstantsPopup_Window.setModal(true);
     BrewConstantsPopup_Window.exec();
 }
 
-void MainWindow::on_CB_HLT_InterlockEnabled_clicked()
+void myBrew::on_CB_HLT_InterlockEnabled_clicked()
 {
     if (ui->CB_HLT_InterlockEnabled->isChecked())
         this->hlt_interlock_enabled = true;
@@ -2691,7 +2692,7 @@ void MainWindow::on_CB_HLT_InterlockEnabled_clicked()
         this->hlt_interlock_enabled = false;
 }
 
-void MainWindow::on_CB_BK_InterlockEnabled_clicked()
+void myBrew::on_CB_BK_InterlockEnabled_clicked()
 {
     if (ui->CB_BK_InterlockEnabled->isChecked())
         this->bk_interlock_enabled = true;
@@ -2699,7 +2700,7 @@ void MainWindow::on_CB_BK_InterlockEnabled_clicked()
         this->bk_interlock_enabled = false;
 }
 
-void MainWindow::on_rb_BK_PID_Disable_clicked()
+void myBrew::on_rb_BK_PID_Disable_clicked()
 {
     if (ui->rb_BK_PID_Disable->isChecked())
     {
@@ -2708,7 +2709,7 @@ void MainWindow::on_rb_BK_PID_Disable_clicked()
     }
 }
 
-void MainWindow::on_rb_BK_PID_Enable_clicked()
+void myBrew::on_rb_BK_PID_Enable_clicked()
 {
     if (ui->rb_BK_PID_Enable->isChecked())
     {
@@ -2717,25 +2718,25 @@ void MainWindow::on_rb_BK_PID_Enable_clicked()
     }
 }
 
-void MainWindow::on_PB_Settings_DurationSettings_clicked()
+void myBrew::on_PB_Settings_DurationSettings_clicked()
 {
     BrewStepDurationPopup_Window.setModal(true);
     BrewStepDurationPopup_Window.exec();
 }
 
-void MainWindow::on_PB_Settings_TempCalibrationPopup_clicked()
+void myBrew::on_PB_Settings_TempCalibrationPopup_clicked()
 {
     TempProbeCalibrationPopup_Window.setModal(true);
     TempProbeCalibrationPopup_Window.exec();
 }
 
-void MainWindow::on_PB_Settings_AudioAlarmSettingsPopup_clicked()
+void myBrew::on_PB_Settings_AudioAlarmSettingsPopup_clicked()
 {
     Audio_AlarmSettingsPopup_Window.setModal(true);
     Audio_AlarmSettingsPopup_Window.exec();
 }
 
-void MainWindow::on_PB_Settings_HLTPIDPopup_clicked()
+void myBrew::on_PB_Settings_HLTPIDPopup_clicked()
 {
     HLTPIDSettingsPopup_Window.setModal(true);
     HLTPIDSettingsPopup_Window.exec();
@@ -2759,7 +2760,7 @@ void MainWindow::on_PB_Settings_HLTPIDPopup_clicked()
         this->update_HLT_PID_Settings();
 }
 
-void MainWindow::on_PB_Settings_BKPIDPopup_clicked()
+void myBrew::on_PB_Settings_BKPIDPopup_clicked()
 {
     BKPIDSettingsPopup_Window.setModal(true);
     BKPIDSettingsPopup_Window.exec();
@@ -2783,7 +2784,7 @@ void MainWindow::on_PB_Settings_BKPIDPopup_clicked()
         this->update_BK_PID_Settings();
 }
 
-void MainWindow::on_PB_Settings_BoilCal_Browse_clicked()
+void myBrew::on_PB_Settings_BoilCal_Browse_clicked()
 {
     this->boil_csv_path = QFileDialog::getOpenFileName(this,
         tr("Boil Level Sensor Cal Data"), "/home/pi/", tr("CSV (*.csv)"));
@@ -2791,7 +2792,7 @@ void MainWindow::on_PB_Settings_BoilCal_Browse_clicked()
     SENSOR_THREAD.SensorWorker_Load_CSV_Data(this->boil_csv_path,this->hlt_csv_path);
 }
 
-void MainWindow::on_PB_Settings_HLTCal_Browse_clicked()
+void myBrew::on_PB_Settings_HLTCal_Browse_clicked()
 {
     this->hlt_csv_path = QFileDialog::getOpenFileName(this,
         tr("HLT Level Sensor Cal Data"), "/home/pi/", tr("CSV (*.csv)"));
@@ -2799,65 +2800,65 @@ void MainWindow::on_PB_Settings_HLTCal_Browse_clicked()
     SENSOR_THREAD.SensorWorker_Load_CSV_Data(this->boil_csv_path,this->hlt_csv_path);
 }
 
-void MainWindow::on_DSB_HLT_AutoFill_FillToQuarts_valueChanged(double arg1)
+void myBrew::on_DSB_HLT_AutoFill_FillToQuarts_valueChanged(double arg1)
 {
     this->HLT_AutoFill_amount = ui->DSB_HLT_AutoFill_FillToQuarts->value();
 }
 
-void MainWindow::on_PB_HLT_AutoFill_Start_clicked()
+void myBrew::on_PB_HLT_AutoFill_Start_clicked()
 {
     this->HLT_AutoFill_enabled = true;
     this->HLT_AutoFill_amount = ui->DSB_HLT_AutoFill_FillToQuarts->value();
 }
 
-void MainWindow::on_PB_HLT_AutoFill_Stop_clicked()
+void myBrew::on_PB_HLT_AutoFill_Stop_clicked()
 {
     this->HLT_AutoFill_enabled = false;
     this->GPIO_24_val = 0;
     update_GPIO_Settings();
 }
 
-void MainWindow::on_rb_HLT_FillValve_Open_clicked()
+void myBrew::on_rb_HLT_FillValve_Open_clicked()
 {
     this->GPIO_24_val = 1;
     update_GPIO_Settings();
 }
 
-void MainWindow::on_rb_HLT_FillValve_Closed_clicked()
+void myBrew::on_rb_HLT_FillValve_Closed_clicked()
 {
     this->GPIO_24_val = 0;
     update_GPIO_Settings();
 }
 
-void MainWindow::on_rb_HLT_AutoStart_Enable_clicked()
+void myBrew::on_rb_HLT_AutoStart_Enable_clicked()
 {
     this->HLT_AutoStart_enabled = true;
     connect(this->clock_timer, SIGNAL(timeout()), this, SLOT(update_HLT_AutoStart()));
 }
 
-void MainWindow::on_rb_HLT_AutoStart_Disable_clicked()
+void myBrew::on_rb_HLT_AutoStart_Disable_clicked()
 {
     this->HLT_AutoStart_enabled = false;
 }
 
-void MainWindow::on_TE_HLT_AutoStart_TimeToStart_Value_timeChanged(const QTime &time)
+void myBrew::on_TE_HLT_AutoStart_TimeToStart_Value_timeChanged(const QTime &time)
 {
     this->HLT_AutoStart_StartTime.setTime(time);
 }
 
-void MainWindow::on_TE_HLT_AutoStart_TimeOfTempAchieved_Value_timeChanged(const QTime &time)
+void myBrew::on_TE_HLT_AutoStart_TimeOfTempAchieved_Value_timeChanged(const QTime &time)
 {
     this->HLT_AutoStart_TempAchievedTime.setTime(time);
 }
 
-void MainWindow::on_rb_HLT_AutoStart_TimeToStartMode_clicked()
+void myBrew::on_rb_HLT_AutoStart_TimeToStartMode_clicked()
 {
     this->HLT_AutoStart_TimeToStartMode_enabled = true;
     this->HLT_AutoStart_TimeOfTempAchievedMode_enabled = false;
     this->HLT_AutoStart_StartTime = QDateTime(ui->DTE_HLT_AutoStart_TimeToStart_Value->dateTime());
 }
 
-void MainWindow::update_HLT_AutoStart()
+void myBrew::update_HLT_AutoStart()
 {
     if(this->HLT_AutoStart_enabled)
     {
@@ -2882,14 +2883,14 @@ void MainWindow::update_HLT_AutoStart()
     }
 }
 
-void MainWindow::on_rb_HLT_AutoStart_TimeOfTempAchievedMode_clicked()
+void myBrew::on_rb_HLT_AutoStart_TimeOfTempAchievedMode_clicked()
 {
     this->HLT_AutoStart_TimeToStartMode_enabled = false;
     this->HLT_AutoStart_TimeOfTempAchievedMode_enabled = true;
     this->HLT_AutoStart_TempAchievedTime = QDateTime(ui->DTE_HLT_AutoStart_TimeOfTempAchieved_Value->dateTime());
 }
 
-void MainWindow::on_PB_Logs_CaptureGroundTemp_clicked()
+void myBrew::on_PB_Logs_CaptureGroundTemp_clicked()
 {
     ui->L_Logs_GroundWaterTemp->setText(ui->L_HLT_CurrentTemp->text());
 
@@ -2914,7 +2915,7 @@ void MainWindow::on_PB_Logs_CaptureGroundTemp_clicked()
     }
 }
 
-void MainWindow::on_LE_Logs_MashpH_editingFinished()
+void myBrew::on_LE_Logs_MashpH_editingFinished()
 {
     qDebug() << "inserting brewday_log entry: mash pH: " << ui->LE_Logs_MashpH->text();
 
@@ -2937,7 +2938,7 @@ void MainWindow::on_LE_Logs_MashpH_editingFinished()
     }
 }
 
-void MainWindow::on_PB_Boil_PostBoilTimer_Start_clicked()
+void myBrew::on_PB_Boil_PostBoilTimer_Start_clicked()
 {
     this->PostBoilTimer_StartTime = new QDateTime(QDateTime::currentDateTime());
     this->PostBoilTimer_EndTime = new QDateTime(this->PostBoilTimer_StartTime->addSecs(this->max_postboil_time*60));
@@ -2952,22 +2953,22 @@ void MainWindow::on_PB_Boil_PostBoilTimer_Start_clicked()
     this->postboil_timer->start(1000);
 }
 
-void MainWindow::on_PB_Boil_PostBoilTimer_Stop_clicked()
+void myBrew::on_PB_Boil_PostBoilTimer_Stop_clicked()
 {
 
 }
 
-void MainWindow::on_DTE_HLT_AutoStart_TimeToStart_Value_editingFinished()
+void myBrew::on_DTE_HLT_AutoStart_TimeToStart_Value_editingFinished()
 {
     this->HLT_AutoStart_StartTime = QDateTime(ui->DTE_HLT_AutoStart_TimeToStart_Value->dateTime());
 }
 
-void MainWindow::on_DTE_HLT_AutoStart_TimeOfTempAchieved_Value_editingFinished()
+void myBrew::on_DTE_HLT_AutoStart_TimeOfTempAchieved_Value_editingFinished()
 {
     this->HLT_AutoStart_TempAchievedTime = QDateTime(ui->DTE_HLT_AutoStart_TimeOfTempAchieved_Value->dateTime());
 }
 
-void MainWindow::on_PB_Recipe_DeleteHop_clicked()
+void myBrew::on_PB_Recipe_DeleteHop_clicked()
 {
     if(ui->Table_Recipe_HopAdditions->rowCount() > 0)
     {
@@ -2981,7 +2982,7 @@ void MainWindow::on_PB_Recipe_DeleteHop_clicked()
     }
 }
 
-void MainWindow::on_PB_Recipe_DeleteStep_clicked()
+void myBrew::on_PB_Recipe_DeleteStep_clicked()
 {
     if(ui->Table_Recipe_MashSteps->rowCount() > 0)
     {
@@ -2990,7 +2991,7 @@ void MainWindow::on_PB_Recipe_DeleteStep_clicked()
     }
 }
 
-void MainWindow::on_PB_Recipe_DeleteFermentable_clicked()
+void myBrew::on_PB_Recipe_DeleteFermentable_clicked()
 {
     if(ui->table_Recipe_Fermentables->rowCount() > 0)
         ui->table_Recipe_Fermentables->removeRow(ui->table_Recipe_Fermentables->rowCount()-1);
