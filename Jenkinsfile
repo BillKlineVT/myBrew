@@ -12,7 +12,7 @@ pipeline {
         }
         stage('package') {
             steps {
-              sh 'mkdir package_build'
+              sh 'rm -fr package_build ; mkdir package_build'
               sh 'cp myBrewApp/myBrewApp package_build'
               sh 'cp myBrewLib/libmyBrewLib* package_build'
               sh 'cp myBrewTests/myBrewTests package_build'
