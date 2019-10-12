@@ -19,10 +19,11 @@ pipeline {
         steps {
           sh 'rm -fr package_build ; mkdir package_build'
           sh 'cp myBrewApp/myBrewApp package_build'
-          sh 'cp myBrewLib/libmyBrewLib* package_build'
+          sh 'mkdir -p package_build/lib; cp myBrewLib/libmyBrewLib* package_build/lib'
           sh 'cp myBrewTests/myBrewTests package_build'
-          sh 'cp images/* package_build'
-          sh 'cp audio/* package_build'
+          sh 'cp -a images package_build'
+          sh 'cp -a audio package_build'
+          sh 'cp -a python package_build'
           sh 'cd package_build'
           sh 'cd package_build; tar cvzf ../myBrew_v${BUILD_NUMBER}.tar.gz *'
         }

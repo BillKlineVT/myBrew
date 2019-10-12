@@ -55,7 +55,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>cooler.jpg</pixmap>
+       <pixmap>images/cooler.jpg</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="label_11">
@@ -102,7 +102,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>keggle.jpeg</pixmap>
+       <pixmap>images/keggle.jpeg</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="label_15">
@@ -131,7 +131,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>cooler.jpg</pixmap>
+       <pixmap>images/cooler.jpg</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="label_22">
@@ -650,7 +650,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>logo.png</pixmap>
+       <pixmap>images/logo.png</pixmap>
       </property>
      </widget>
      <widget class="QLabel" name="L_BK_RateOfHeat_Main">
@@ -2427,7 +2427,7 @@ Fermentable</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>cooler.jpg</pixmap>
+       <pixmap>images/cooler.jpg</pixmap>
       </property>
      </widget>
      <widget class="QSlider" name="VS_HLT_Volume">
@@ -2607,7 +2607,7 @@ Fermentable</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>blue.png</normaloff>blue.png</iconset>
+        <normaloff>images/blue.png</normaloff>images/blue.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -2630,7 +2630,7 @@ Fermentable</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>red.png</normaloff>red.png</iconset>
+        <normaloff>images/red.png</normaloff>images/red.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -2813,7 +2813,7 @@ Fermentable</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>green.png</normaloff>green.png</iconset>
+        <normaloff>images/green.png</normaloff>images/green.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -3476,7 +3476,7 @@ Interlock Enabled</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>cooler.jpg</pixmap>
+       <pixmap>images/cooler.jpg</pixmap>
       </property>
      </widget>
      <widget class="QCheckBox" name="MLT_Temp_Enable_ChkBox_HERMS">
@@ -3497,7 +3497,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>red.png</normaloff>red.png</iconset>
+        <normaloff>images/red.png</normaloff>images/red.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -3915,7 +3915,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>blue.png</normaloff>blue.png</iconset>
+        <normaloff>images/blue.png</normaloff>images/blue.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -4006,7 +4006,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>green.png</normaloff>green.png</iconset>
+        <normaloff>images/green.png</normaloff>images/green.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -4200,7 +4200,7 @@ Temp</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>keggle.jpeg</pixmap>
+       <pixmap>images/keggle.jpeg</pixmap>
       </property>
      </widget>
      <widget class="QCheckBox" name="Boil_PWM_Enable_ChkBox">
@@ -4217,7 +4217,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>blue.png</normaloff>blue.png</iconset>
+        <normaloff>images/blue.png</normaloff>images/blue.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -4240,7 +4240,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>red.png</normaloff>red.png</iconset>
+        <normaloff>images/red.png</normaloff>images/red.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -4839,7 +4839,7 @@ Temp Achieved</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>green.png</normaloff>green.png</iconset>
+        <normaloff>images/green.png</normaloff>images/green.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -5252,7 +5252,7 @@ Interlock Enabled</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>blue.png</normaloff>blue.png</iconset>
+        <normaloff>images/blue.png</normaloff>images/blue.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -5275,7 +5275,7 @@ Interlock Enabled</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>red.png</normaloff>red.png</iconset>
+        <normaloff>images/red.png</normaloff>images/red.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -5474,7 +5474,7 @@ Interlock Enabled</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>green.png</normaloff>green.png</iconset>
+        <normaloff>images/green.png</normaloff>images/green.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6354,7 +6354,7 @@ Interlock Enabled</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>red.png</normaloff>red.png</iconset>
+        <normaloff>images/red.png</normaloff>images/red.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6374,7 +6374,7 @@ Interlock Enabled</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>blue.png</normaloff>blue.png</iconset>
+        <normaloff>images/blue.png</normaloff>images/blue.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6398,7 +6398,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>green.png</normaloff>green.png</iconset>
+        <normaloff>images/green.png</normaloff>images/green.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6418,7 +6418,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>black.png</normaloff>black.png</iconset>
+        <normaloff>images/black.png</normaloff>images/black.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6441,7 +6441,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>cyan.png</normaloff>cyan.png</iconset>
+        <normaloff>images/cyan.png</normaloff>images/cyan.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
@@ -6464,7 +6464,7 @@ Temp</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>magenta.png</normaloff>magenta.png</iconset>
+        <normaloff>images/magenta.png</normaloff>images/magenta.png</iconset>
       </property>
       <property name="checked">
        <bool>true</bool>
