@@ -69,9 +69,11 @@ pipeline {
           }
         }
         stage('push-docker-runtime-x86_64') {
-          script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+          steps { 
+            script {
+              docker.withRegistry( '', registryCredential ) {
+                dockerImage.push()
+              }
             }
           }
         }
