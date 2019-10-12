@@ -37,7 +37,7 @@ pipeline {
     stage('unit-tests') {
       steps {
         sh 'rm -rf /DB; mkdir /DB'
-        sh 'cd package_build; export LD_LIBRARY_PATH=. ; xvfb-run ./myBrewTests -o ../test_output.xml,xml'
+        sh 'cd package_build; export LD_LIBRARY_PATH=./lib ; xvfb-run ./myBrewTests -o ../test_output.xml,xml'
         sh 'rm -rf package_build'
       }
     }
