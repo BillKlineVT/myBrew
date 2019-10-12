@@ -325,8 +325,8 @@ private:
     QDateTime *ETC_Time;
     void calculate_ETC();
     SensorWorkerThread SENSOR_THREAD;
-    PIDThread HLT_PID_Thread;
-    PIDThread Boil_PID_Thread;
+    //PIDThread HLT_PID_Thread;
+    //PIDThread Boil_PID_Thread;
     QSqlDatabase *system_db;
     double HLT_PID_setpoint;
     double HLT_PID_P_val;

@@ -267,7 +267,8 @@ myBrew::~myBrew()
 {
     disconnect(&SENSOR_THREAD, SIGNAL(SensorWorker_READ_COMPLETE(double, double, double, double, double, double, double, bool, bool, bool, bool, bool, bool)),
              this, SLOT(SensorHandler(double, double, double, double, double, double, double, bool, bool, bool, bool, bool, bool)));
-    delete &SENSOR_THREAD;
+    SENSOR_THREAD.terminate();
+    SENSOR_THREAD.wait();
     QString db_ConnectionName = this->system_db->connectionName();
     this->system_db->close();
     delete this->system_db;
