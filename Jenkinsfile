@@ -1,6 +1,11 @@
 #!groovy
 
 pipeline {
+      environment {
+        registry = "billklinefelter/myBrew_x86_64"
+        registryCredential = 'dockerhub'
+        dockerImage = ''
+    }
     agent any
     stages {
         stage('build') {
@@ -51,7 +56,25 @@ pipeline {
             }
           }
         }
-    }
+        stage('build-docker-runtime-x86_64') {
+          steps {
+            script {
+              dockerImage = docker.build(registry + ":$BUILD_NUMBER", "-f ./targets/x86_64/Dockerfile .")
+            }
+          }
+        }
+        stage('test-docker-runtime-x86_64'){
+          steps {
+
+          }
+        }
+        stage('push-docker-runtime-x86_64') {
+          script {
+            docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+            }
+          }
+        }
     post {
       always{
         xunit (
