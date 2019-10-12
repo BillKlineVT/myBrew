@@ -1,13 +1,13 @@
 #!groovy
 
 pipeline {
-      environment {
-        registry = "billklinefelter/myBrew_x86_64"
-        registryCredential = 'dockerhub'
-        dockerImage = ''
-    }
-    agent any
-    stages {
+  environment {
+    registry = "billklinefelter/myBrew_x86_64"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
         stage('build') {
             steps {
                 sh 'qmake -makefile'
@@ -84,4 +84,5 @@ pipeline {
             tools: [ QtTest(pattern: 'test_output.xml') ])
       }
     }
+  }
 }
