@@ -13,8 +13,9 @@ pipeline {
         stage('package') {
             steps {
               sh 'mkdir package_build'
-              sh 'cp myBrewApp/myBrew package_build'
+              sh 'cp myBrewApp/myBrewApp package_build'
               sh 'cp myBrewLib/libmyBrewLib* package_build'
+              sh 'cp myBrewTests/myBrewTests package_build'
               sh 'cp images/* package_build'
               sh 'cp audio/* package_build'
               sh 'cd package_build'
