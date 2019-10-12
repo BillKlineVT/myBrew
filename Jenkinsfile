@@ -2,7 +2,7 @@
 
 pipeline {
   environment {
-    registry = "billklinefelter/myBrew_x86_64"
+    registry = "billklinefelter/mybrew_x86_64"
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
