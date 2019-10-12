@@ -15,4 +15,4 @@ VOLUME /DB
 ENV LD_LIBRARY_PATH /opt/myBrew/lib/
 
 WORKDIR /opt/myBrew
-ENTRYPOINT ./myBrew
+ENTRYPOINT ./myBrewApp
