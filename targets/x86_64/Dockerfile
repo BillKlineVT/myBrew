@@ -3,7 +3,9 @@ FROM ubuntu:bionic
 USER root
 
 RUN apt-get update && \
-    apt-get -y install qt5-default 
+    apt-get -y install qt5-default && \
+    apt-get -y install python && \
+    apt-get install vim
 
 ADD myBrewLib/libmyBrewLib* /opt/myBrew/lib/
 ADD myBrewApp/myBrewApp /opt/myBrew/

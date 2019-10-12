@@ -5,7 +5,7 @@ import sys
 import glob
 import sqlite3 as lite
 from time import sleep
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 
 #globals
 con="" #db connection
