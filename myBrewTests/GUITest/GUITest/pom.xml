@@ -3,53 +3,53 @@
   <modelVersion>4.0.0</modelVersion>
 
   <build>
-    <pluginManagement>
-        <plugins>
-            <!-- Default java version was 1.5, to change the default version added this plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-			  <groupId>org.apache.maven.plugins</groupId>
-			  <artifactId>maven-dependency-plugin</artifactId>
-			  <executions>
-			    <execution>
-			      <phase>package</phase>
-			      <goals>
-			        <goal>copy-dependencies</goal>
-			      </goals>
-			      <configuration>
-			        <outputDirectory>${project.build.directory}/${project.build.finalName}.lib</outputDirectory>
-			        <includeScope>runtime</includeScope>
-			      </configuration>
-			    </execution>
-			  </executions>
-			</plugin>
-            <plugin>
-		      <!-- Build an executable JAR -->
-		      <groupId>org.apache.maven.plugins</groupId>
-		      <artifactId>maven-jar-plugin</artifactId>
+       <plugins>
+           <!-- Default java version was 1.5, to change the default version added this plugin -->
+           <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-compiler-plugin</artifactId>
+               <configuration>
+                   <source>1.8</source>
+                   <target>1.8</target>
+               </configuration>
+           </plugin>
+          <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-dependency-plugin</artifactId>
+		  <executions>
+		    <execution>
+		      <phase>package</phase>
+		      <goals>
+		        <goal>copy-dependencies</goal>
+		      </goals>
 		      <configuration>
-		        <archive>
-		          <manifest>
-		            <addClasspath>true</addClasspath>
-		            <classpathPrefix>${project.build.finalName}.lib/</classpathPrefix>
-		            <mainClass>${fully.qualified.main.class}</mainClass>
-		          </manifest>
-		        </archive>
+		        <outputDirectory>${project.build.directory}/${project.build.finalName}.lib</outputDirectory>
 		      </configuration>
-		    </plugin>
-        </plugins>
-    </pluginManagement>
+		    </execution>
+		  </executions>
+		</plugin>
+           <plugin>
+	      <!-- Build an executable JAR -->
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-jar-plugin</artifactId>
+	      <configuration>
+	        <archive>
+	          <manifest>
+	            <addClasspath>true</addClasspath>
+	            <classpathPrefix>${project.build.directory}/${project.build.finalName}.lib/</classpathPrefix>
+	            <mainClass>com.billklinefelter.myBrewTests.GUITest.myBrewGUITest</mainClass>
+	          </manifest>
+	          <manifestEntries>
+             	<Class-Path>${project.build.directory}/${project.build.finalName}.lib/sikulixapi-1.1.4-SNAPSHOT.jar</Class-Path>
+              </manifestEntries>
+	        </archive>
+	      </configuration>
+	    </plugin>
+    </plugins>
   </build>
 
   <groupId>com.billklinefelter.myBrewTests</groupId>
-  <artifactId>GUITest</artifactId>
+  <artifactId>GUITest.myBrewGUITest</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 

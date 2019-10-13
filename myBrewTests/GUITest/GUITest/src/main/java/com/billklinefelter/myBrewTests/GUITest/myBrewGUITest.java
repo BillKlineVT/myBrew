@@ -1,7 +1,7 @@
 package com.billklinefelter.myBrewTests.GUITest;
 import org.sikuli.script.*;
 import static org.junit.Assert.*;
-import org.sikuli.script.ImagePath;
+//import org.sikuli.script.ImagePath;
 
 
 public class myBrewGUITest {
@@ -10,13 +10,13 @@ public class myBrewGUITest {
 		ImagePath.setBundlePath("./images/");
 		Screen s = new Screen();
 		Region r = new Region(0,0,100,700);
-		Match m = r.find("mainTab_selected.png");
-		System.out.print("Found at X: " + m.getX() + " Y: " + m.getY());
+		//Match m = r.find("mainTab_selected.png");
+		//System.out.print("Found at X: " + m.getX() + " Y: " + m.getY());
 		
 		//s.setAutoWaitTimeout(20.0);
-		//System.out.print("current timeout: " + s.getAutoWaitTimeout());
-		//assertNotNull("test exist", s.exists(new Pattern("cooler.png").similar(0.2f)));
-		//s.click(new Pattern("cooler.png").similar(0.2f));
+		System.out.print("current timeout: " + s.getAutoWaitTimeout());
+		assertNotNull("test exist", s.exists(new Pattern("cooler.png").similar(0.2f)));
+		s.click(new Pattern("cooler.png").similar(0.2f));
 		//Pattern maintab = new Pattern("mainTab_selected.png").similar(0.5f);
 		//assertNotNull("Verify correct tab at start", s.exists(maintab));
 		//s.click(new Pattern("calc6.png").similar(0.5f));
