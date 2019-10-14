@@ -92,9 +92,9 @@ pipeline {
             remote.host = "192.168.1.5"
             remote.allowAnyHosts = true
           }
-          withCredentials(['c603ab1f-f27a-4da2-bea2-f010ee12676a']) {
-            sshCommand remote: remote, command: 'curl -u jenkins:AKCp5e2g4tWoK7tcbXF5qG946eiykvyJAsDkPwiQsZNC7upBmfdpeS2mjPF4uJC6YiQx5FrU6 -X GET "http://192.168.1.5:8081/artifactory/generic-local/myBrew/myBrew_v\$BUILD_NUMBER.tar.gz" --output myBrew_v\$BUILD_NUMBER.tar.gz'
-            sshCommand remote: remote, command: 'cd; mkdir -p SUT; tar xzvf myBrew_v\$BUILD_NUMBER.tar.gz;cd ~/SUT/myBrewTests/GUITest/GUITest; export DISPLAY=:1; java -jar target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.jar > myBrew_auto_gui_test_results.txt'
+          withCredentials(([usernameColonPassword(credentialsId: 'c603ab1f-f27a-4da2-bea2-f010ee12676a', variable: 'USERPASS')]) ([usernameColonPassword(credentialsId: 'mylogin', variable: 'USERPASS')]) {
+            sh 'ssh -p $USERPASS -t root@192.168.1.5 "curl -u jenkins:AKCp5e2g4tWoK7tcbXF5qG946eiykvyJAsDkPwiQsZNC7upBmfdpeS2mjPF4uJC6YiQx5FrU6 -X GET "http://192.168.1.5:8081/artifactory/generic-local/myBrew/myBrew_v\$BUILD_NUMBER.tar.gz" --output myBrew_v\$BUILD_NUMBER.tar.gz"'
+            sh 'ssh -p $USERPASS -t root@192.168.1.5 "cd; mkdir -p SUT; tar xzvf myBrew_v\$BUILD_NUMBER.tar.gz;cd ~/SUT/myBrewTests/GUITest/GUITest; export DISPLAY=:1; java -jar target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.jar > myBrew_auto_gui_test_results.txt"'
           }
           //sh '''
           //  cd myBrewTests/GUITest/GUITest
