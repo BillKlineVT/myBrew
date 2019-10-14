@@ -15,12 +15,23 @@ pipeline {
             sh 'make'
         }
     }
+    stage('build-sikulix-auto-gui-test') {
+      steps { 
+          sh '''
+            cd myBrewTests/GUITest/GUITest
+            mvn clean package 
+          '''
+        }
+      }
+    }
     stage('package') {
         steps {
           sh 'rm -fr package_build ; mkdir package_build'
           sh 'cp myBrewApp/myBrewApp package_build'
           sh 'mkdir -p package_build/lib; cp myBrewLib/libmyBrewLib* package_build/lib'
           sh 'cp myBrewTests/myBrewTests package_build'
+          sh 'cp myBrewTests/myBrewTests/GUITest/GUITest/target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.jar package_build'
+          sh 'cp -a myBrewTests/myBrewTests/GUITest/GUITest/target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.lib package_build'
           sh 'cp -a images package_build'
           sh 'cp -a audio package_build'
           sh 'cp -a python package_build'
@@ -64,11 +75,6 @@ pipeline {
         }
       }
     }
-    //stage('test-docker-runtime-x86_64'){
-    //  steps {
-
-    //  }
-    //}
     stage('push-docker-runtime-x86_64') {
       steps { 
         script {
@@ -76,6 +82,28 @@ pipeline {
             dockerImage.push()
             dockerImage.push("latest")
           }
+        }
+      }
+    }
+    stage('execute-sikulix-auto-gui-test') {
+      steps { 
+          sh '''
+            cd myBrewTests/GUITest/GUITest
+            export DISPLAY=:1
+            java -jar target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.jar > myBrew_v\${BUILD_NUMBER}_auto_gui_test_results.txt
+          '''
+          script {
+          def server = Artifactory.newServer url: 'http://artifactory:8081/artifactory', credentialsId: '64b21b56-0d9a-49d6-9ea1-399a1377b13f'
+          def uploadSpec = """{
+            "files": [
+              {
+                "pattern": "myBrew_v${BUILD_NUMBER}_auto_gui_test_results.txt",
+                "target": "generic-local/myBrew_testResults/"
+              }
+            ]
+          }"""
+          server.upload spec: uploadSpec, failNoOp: true
+        }
         }
       }
     }
