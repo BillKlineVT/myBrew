@@ -121,20 +121,20 @@ public class myBrewGUITest {
 		double similarity = 0.8;
 		//Pattern checklistTab_startButton = new Pattern("checklistTab_startButton.png").similar(similarity);
 		clickCheckbox(s, new Pattern("checklistTab_startButton.png").similar(similarity), 0, 0);
-		clickCheckbox(s, new Pattern("checklistTab_fillHLT.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_heatStrikeWater.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_transferStrikeWater.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_doughIn.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_fillHLT.png").similar(similarity), -26, 0);
+		clickCheckbox(s, new Pattern("checklistTab_heatStrikeWater.png").similar(similarity), -62, 0);
+		clickCheckbox(s, new Pattern("checklistTab_transferStrikeWater.png").similar(similarity), -104, 0);
+		clickCheckbox(s, new Pattern("checklistTab_doughIn.png").similar(similarity), -32, 0);
 		clickCheckbox(s, new Pattern("checklistTab_mash.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_mashOut.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_batchSparge1.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_batchSparge1_vorlauf.png").similar(similarity), -20, 15);
-		clickCheckbox(s, new Pattern("checklistTab_batchSparge2.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_batchSparge2_vorlauf.png").similar(similarity), -20, 15);
-		clickCheckbox(s, new Pattern("checklistTab_boil.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_whirlpool.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_chill.png").similar(similarity), -20, 0);
-		clickCheckbox(s, new Pattern("checklistTab_clean.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_mashOut.png").similar(similarity), -33, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge1.png").similar(similarity), -55, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge1_vorlauf.png").similar(similarity), -58, 25);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge2.png").similar(similarity), -56, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge2_vorlauf.png").similar(similarity), -58, 25);
+		clickCheckbox(s, new Pattern("checklistTab_boil.png").similar(similarity), -17, 0);
+		clickCheckbox(s, new Pattern("checklistTab_whirlpool.png").similar(similarity), -37, 0);
+		clickCheckbox(s, new Pattern("checklistTab_chill.png").similar(similarity), -19, 0);
+		clickCheckbox(s, new Pattern("checklistTab_clean.png").similar(similarity), -23, 0);
 
 	}
 
