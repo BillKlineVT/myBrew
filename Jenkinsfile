@@ -85,7 +85,7 @@ pipeline {
         }
       }
     }
-    stage('execute-sikulix-auto-gui-test') {
+    /*stage('execute-sikulix-auto-gui-test') {
       steps { 
           script {
             def remote = [:]
@@ -113,8 +113,8 @@ pipeline {
             ]
           }"""
           server.upload spec: uploadSpec, failNoOp: true
-          }*/
-      }
+          }
+      }*/
     }
   }
   post {
