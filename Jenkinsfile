@@ -84,11 +84,11 @@ pipeline {
         }
       }
     }
+    def remote = [:]
+    remote.name = "SystemUnderTest"
+    remote.host = "192.168.1.5"
+    remote.allowAnyHosts = true
     stage('execute-sikulix-auto-gui-test') {
-      def remote = [:]
-      remote.name = "SystemUnderTest"
-      remote.host = "192.168.1.5"
-      remote.allowAnyHosts = true
       steps { 
           withCredentials(['SystemUnderTest']) {
             sshCommand remote: remote, command: 'curl -u jenkins:AKCp5e2g4tWoK7tcbXF5qG946eiykvyJAsDkPwiQsZNC7upBmfdpeS2mjPF4uJC6YiQx5FrU6 -X GET "http://192.168.1.5:8081/artifactory/generic-local/myBrew/myBrew_v\$BUILD_NUMBER.tar.gz" --output myBrew_v\$BUILD_NUMBER.tar.gz'
