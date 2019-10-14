@@ -29,6 +29,22 @@ public class myBrewGUITest {
 			return false;
 		}
 	}
+	
+	public static boolean clickCheckbox(Screen screen_var, Pattern checkBoxWithLabel, int offset_x, int offset_y) {
+		
+		if (screen_var.exists(checkBoxWithLabel) != null) {
+			try {
+				screen_var.click(checkBoxWithLabel.targetOffset(offset_x, offset_y));
+			} catch (FindFailed e) {
+				// TODO Auto-generated catch block 
+				e.printStackTrace();
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static boolean setState(Screen screen_var, String state) {
 		
 		double similarity = 0.8;
@@ -88,6 +104,7 @@ public class myBrewGUITest {
 		ImagePath.setBundlePath("./images/");
 		Screen s = new Screen();
 		
+		// cycle through all tabs in base GUI
 		setState(s, "main");
 		setState(s, "settings");
 		setState(s, "recipe");
@@ -99,6 +116,25 @@ public class myBrewGUITest {
 		setState(s, "timers");
 		setState(s, "logs");
 		setState(s, "checklist");
+		
+		// cycle through checklist options and confirm behavior
+		double similarity = 0.8;
+		//Pattern checklistTab_startButton = new Pattern("checklistTab_startButton.png").similar(similarity);
+		clickCheckbox(s, new Pattern("checklistTab_startButton.png").similar(similarity), 0, 0);
+		clickCheckbox(s, new Pattern("checklistTab_fillHLT.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_heatStrikeWater.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_transferStrikeWater.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_doughIn.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_mash.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_mashOut.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge1.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge1_vorlauf.png").similar(similarity), -20, 15);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge2.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_batchSparge2_vorlauf.png").similar(similarity), -20, 15);
+		clickCheckbox(s, new Pattern("checklistTab_boil.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_whirlpool.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_chill.png").similar(similarity), -20, 0);
+		clickCheckbox(s, new Pattern("checklistTab_clean.png").similar(similarity), -20, 0);
 
 	}
 
