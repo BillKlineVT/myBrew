@@ -22,7 +22,6 @@ pipeline {
             mvn clean package 
           '''
         }
-      }
     }
     stage('package') {
         steps {
@@ -103,7 +102,7 @@ pipeline {
             ]
           }"""
           server.upload spec: uploadSpec, failNoOp: true
-        }
+          }
         }
       }
     }
