@@ -67,9 +67,9 @@ public class myBrewGUITest {
 			Pattern cleanTab_deselected = new Pattern("cleanTab_deselected.png").similar(similarity);
 			return clickTab(screen_var, cleanTab_selected, cleanTab_deselected);
 		case "timers":
-			Pattern timerTab_selected = new Pattern("timerTab_selected.png").similar(similarity);
-			Pattern timerTab_deselected = new Pattern("timerTab_deselected.png").similar(similarity);
-			return clickTab(screen_var, timerTab_selected, timerTab_deselected);
+			Pattern timersTab_selected = new Pattern("timersTab_selected.png").similar(similarity);
+			Pattern timersTab_deselected = new Pattern("timersTab_deselected.png").similar(similarity);
+			return clickTab(screen_var, timersTab_selected, timersTab_deselected);
 		case "logs":
 			Pattern logsTab_selected = new Pattern("logsTab_selected.png").similar(similarity);
 			Pattern logsTab_deselected = new Pattern("logsTab_deselected.png").similar(similarity);
