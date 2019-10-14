@@ -8,7 +8,12 @@ public class myBrewGUITest {
 
 	public static boolean clickTab(Screen screen_var, Pattern selected, Pattern deselected) {
 		if (screen_var.exists(selected) != null) {
-			System.out.print("Already on tab, nothing to do...");
+			try {
+				screen_var.click(selected);
+			} catch (FindFailed e) {
+				// TODO Auto-generated catch block 
+				e.printStackTrace();
+			}
 			return true;
 		}
 		else if (screen_var.exists(deselected) != null) {
