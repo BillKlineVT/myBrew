@@ -17,6 +17,9 @@ ADD audio/* /opt/myBrew/audio/
 RUN mkdir /DB
 VOLUME /DB
 
+RUN mkdir /opt/myBrew/recipes
+VOLUME /opt/myBrew/recipes
+
 ENV LD_LIBRARY_PATH /opt/myBrew/lib/
 
 WORKDIR /opt/myBrew
