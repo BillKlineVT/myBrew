@@ -6,7 +6,11 @@ pipeline {
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
-  agent any
+  agent {
+    docker {
+      image 'billklinefelter/jenkins-qt5'
+      args '-p 3000:3000'
+    }
   stages {
     stage('build') {
         steps {
