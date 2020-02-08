@@ -25,12 +25,13 @@ pipeline {
     registryCredential = 'dockerhub'
     dockerImage = ''
   }
-  agent {
+  agent any
+  /*{
     docker {
       image 'billklinefelter/jenkins-qt5'
       args '-p 3000:3000'
     }
-  }
+  }*/
   triggers {
     cron(cron_string)
   }
