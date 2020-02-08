@@ -1,1 +1,11 @@
 myBrewProject.pro.user
+.vscode
+myBrewApp
+*.plist
+PkgInfo
+*.dylib
+*.lproj
+.DS_Store
+.qmake.stash
+myBrewTests
+org.eclipse.*

@@ -1,5 +1,20 @@
 #!groovy
 
+String cron_string = ""
+
+if (BRANCH_NAME == "master")
+{
+  cron_string = "@nightly"
+}
+else if (BRANCH_NAME.startsWith("release/"))
+{
+  cron_string = "@weekly"
+}
+else if (BRANCH_NAME == "develop")
+{
+  cron_string = "@hourly"
+}
+
 pipeline {
   environment {
     registry = "billklinefelter/mybrew_x86_64"
@@ -11,6 +26,9 @@ pipeline {
       image 'billklinefelter/jenkins-qt5'
       args '-p 3000:3000'
     }
+  }
+  triggers {
+    cron(cron_string)
   }
   stages {
     stage('build') {
