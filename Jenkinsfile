@@ -14,6 +14,10 @@ else if (BRANCH_NAME == "develop")
 {
   cron_string = "@hourly"
 }
+else if  (BRANCH_NAME.startsWith("feature/"))
+{
+  cron_string = "@weekly"
+}
 
 pipeline {
   environment {
