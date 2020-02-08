@@ -18,6 +18,7 @@ else if  (BRANCH_NAME.startsWith("feature/"))
 {
   cron_string = "@weekly"
 }
+echo "cron string is " + cron_string
 
 pipeline {
   environment {
