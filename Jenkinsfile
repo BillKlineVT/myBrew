@@ -80,7 +80,7 @@ pipeline {
     stage('deliver-binary') {
       steps {
         script {
-          def server = Artifactory.newServer url: 'http://localhost:8081/artifactory', credentialsId: 'jenkins-artifactory-key'
+          def server = Artifactory.newServer url: 'http://artifactory:8081/artifactory', credentialsId: 'jenkins-artifactory-key'
           def uploadSpec = """{
             "files": [
               {
@@ -119,7 +119,7 @@ pipeline {
             remote.allowAnyHosts = true
           }
           withCredentials([usernameColonPassword(credentialsId: 'jenkins-artifactory-key', variable: 'LOGIN')]) {
-            sh 'ssh -t root@192.168.1.5 "curl -u $LOGIN -X GET "http://localhost:8081/artifactory/generic-local/myBrew/myBrew_v\$BUILD_NUMBER.tar.gz" --output myBrew_v\$BUILD_NUMBER.tar.gz"'
+            sh 'ssh -t root@192.168.1.5 "curl -u $LOGIN -X GET "http://artifactory:8081/artifactory/generic-local/myBrew/myBrew_v\$BUILD_NUMBER.tar.gz" --output myBrew_v\$BUILD_NUMBER.tar.gz"'
             sh 'ssh -t root@192.168.1.5 "cd; rm -f SUT; mkdir -p SUT; cd SUT; tar xzvf ../myBrew_v\$BUILD_NUMBER.tar.gz; export DISPLAY=:1; cd GUITest; mvn clean package; java -jar target/GUITest.myBrewGUITest-0.0.1-SNAPSHOT.jar > ../myBrew_v\${BUILD_NUMBER}_auto_gui_test_results.txt"'
             // upload test results to artifactory here...
           }
