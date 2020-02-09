@@ -81,7 +81,10 @@ pipeline {
     }
     stage('deliver-binary') {
       steps {
-        script {
+        withCredentials([usernameColonPassword(credentialsId: 'jenkins-artifactory-key', variable: 'LOGIN')]) {
+          sh "curl -u ${LOGIN} -X PUT http://artifactory:8081/artifactory/myBrew/myBrew_v${BUILD_NUMBER}.tar.gz -T myBrew_v${BUILD_NUMBER}.tar.gz"
+        }
+        /*script {
           def server = Artifactory.newServer url: 'http://artifactory:8081/artifactory', credentialsId: 'jenkins-artifactory-key'
           def uploadSpec = """{
             "files": [
@@ -92,7 +95,7 @@ pipeline {
             ]
           }"""
           server.upload spec: uploadSpec, failNoOp: true
-        }
+        }*/
       }
     }
     stage('build-docker-runtime-x86_64') {
