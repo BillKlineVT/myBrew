@@ -2,7 +2,7 @@
 QT-based Beer Brewing Controller and Monitoring
 
 ## UI
-<p align="center"><img src="https://github.com/BillKlineVT/myBrew/blob/master/myBrew%20screenshots/myBrew%20UI%20screenshot.png?raw=true" width="800" align="middle"/></p>
+<p align="center"><img src="https://github.com/BillKlineVT/myBrew/blob/master/doc/myBrew_screenshots/myBrew%20UI%20screenshot.png?raw=true" width="800" align="middle"/></p>
 - The main user interface is intended to be touchscreen friendly, but needs some more work to evaluate button sizes
 - There are tabs for displays relevant to each step of the brewing process.
 
@@ -17,6 +17,6 @@ QT-based Beer Brewing Controller and Monitoring
 - Pulse Width Modulation (PWM) is done using Raspberry Pi PWM library.  This enables gradual heating needed to implement PID algorithm.
 
 <p align="center">
-<img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20Toolbox.JPG?raw=true" width="400"/>  <img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20Toolbox%20internal.JPG?raw=true" width="400"/>
-<img src="https://github.com/BillKlineVT/myBrew/blob/master/Documentation/myBrew%20v1%20schematic%20(2x%20120VAC%20circuits).JPG?raw=true" alt="" width="800"/> 
+<img src="https://github.com/BillKlineVT/myBrew/blob/master/doc/myBrew%20Toolbox.JPG?raw=true" width="400"/>  <img src="https://github.com/BillKlineVT/myBrew/blob/master/doc/myBrew%20Toolbox%20internal.JPG?raw=true" width="400"/>
+<img src="https://github.com/BillKlineVT/myBrew/blob/master/doc/myBrew%20v1%20schematic%20(2x%20120VAC%20circuits).JPG?raw=true" alt="" width="800"/> 
 </p>
