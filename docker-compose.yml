@@ -1,0 +1,134 @@
+version: "3.9"
+
+# ── myBrew local development stack ───────────────────────────────────────────
+# All hardware access is mocked (MOCK_HARDWARE=true).
+# Persistent data lives in the named volume 'postgres-data'.
+#
+# Usage:
+#   docker compose up --build          # start everything
+#   docker compose up frontend         # start only frontend + its deps
+#   docker compose logs -f sensor-service
+
+services:
+
+  # ── Infrastructure ──────────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mybrew
+      POSTGRES_PASSWORD: mybrew
+      POSTGRES_DB: mybrew
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./services/data-service/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mybrew"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save "" --appendonly no
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  # ── Backend microservices ───────────────────────────────────────────────────
+
+  data-service:
+    build: ./services/data-service
+    environment:
+      DATABASE_URL: postgresql+asyncpg://mybrew:mybrew@postgres:5432/mybrew
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8001/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  gpio-service:
+    build: ./services/gpio-service
+    environment:
+      MOCK_HARDWARE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8003/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  sensor-service:
+    build: ./services/sensor-service
+    environment:
+      MOCK_HARDWARE: "true"
+      DATA_SERVICE_URL: http://data-service:8001
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  pid-service:
+    build: ./services/pid-service
+    environment:
+      DATA_SERVICE_URL: http://data-service:8001
+      GPIO_SERVICE_URL: http://gpio-service:8003
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-service:
+        condition: service_healthy
+      gpio-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "8000:8000"
+    environment:
+      DATA_SERVICE_URL: http://data-service:8001
+      GPIO_SERVICE_URL: http://gpio-service:8003
+      PID_SERVICE_URL: http://pid-service:8004
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-service:
+        condition: service_healthy
+      gpio-service:
+        condition: service_healthy
+      pid-service:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Frontend ────────────────────────────────────────────────────────────────
+
+  frontend:
+    build: ./services/frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
