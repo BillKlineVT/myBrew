@@ -48,7 +48,7 @@ async def _redis_subscriber():
                 await ws.send_text(payload)
             except Exception:
                 dead.add(ws)
-        _ws_clients -= dead
+        _ws_clients.difference_update(dead)
 
 
 @app.on_event("startup")
