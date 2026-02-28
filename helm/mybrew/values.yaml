@@ -1,0 +1,222 @@
+# ── myBrew Helm Values ────────────────────────────────────────────────────────
+# Override any value with:  helm install mybrew ./helm/mybrew -f my-values.yaml
+
+# Global image settings
+image:
+  registry: docker.io
+  pullPolicy: IfNotPresent
+  # Override per-service below, or set a global tag
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# ── Service Account ───────────────────────────────────────────────────────────
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# ── Common labels added to all resources ──────────────────────────────────────
+commonLabels: {}
+commonAnnotations: {}
+
+# ── api-gateway ───────────────────────────────────────────────────────────────
+apiGateway:
+  image:
+    repository: billklinefelter/mybrew-api-gateway
+    tag: ""        # defaults to .Values.image.tag
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  service:
+    type: ClusterIP
+    port: 8000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 70
+
+# ── data-service ──────────────────────────────────────────────────────────────
+dataService:
+  image:
+    repository: billklinefelter/mybrew-data-service
+    tag: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: ClusterIP
+    port: 8001
+
+# ── sensor-service ────────────────────────────────────────────────────────────
+sensorService:
+  image:
+    repository: billklinefelter/mybrew-sensor-service
+    tag: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  service:
+    type: ClusterIP
+    port: 8002
+  # Set to false on real RPi hardware; enables host device mounts
+  mockHardware: true
+  # 1-wire sensor IDs — override for real hardware
+  hltSensorId: "28-000004cd6f22"
+  mashSensorId: "28-000004cd6f23"
+  boilSensorId: "28-000004ce4807"
+  # Serial port for capacitive level sensor
+  serialPort: "/dev/ttyAMA0"
+  pollIntervalSeconds: "1.0"
+
+# ── gpio-service ──────────────────────────────────────────────────────────────
+gpioService:
+  image:
+    repository: billklinefelter/mybrew-gpio-service
+    tag: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 25m
+      memory: 48Mi
+    limits:
+      cpu: 100m
+      memory: 96Mi
+  service:
+    type: ClusterIP
+    port: 8003
+  # Set to false on real RPi hardware
+  mockHardware: true
+
+# ── pid-service ───────────────────────────────────────────────────────────────
+pidService:
+  image:
+    repository: billklinefelter/mybrew-pid-service
+    tag: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  service:
+    type: ClusterIP
+    port: 8004
+  controlIntervalSeconds: "1.0"
+
+# ── frontend ──────────────────────────────────────────────────────────────────
+frontend:
+  image:
+    repository: billklinefelter/mybrew-frontend
+    tag: ""
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 25m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+  service:
+    type: ClusterIP
+    port: 80
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 70
+
+# ── Ingress ───────────────────────────────────────────────────────────────────
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: mybrew.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+        - path: /api
+          pathType: Prefix
+          service: api-gateway
+        - path: /ws
+          pathType: Prefix
+          service: api-gateway
+  tls: []
+  # tls:
+  #   - secretName: mybrew-tls
+  #     hosts:
+  #       - mybrew.local
+
+# ── PostgreSQL (Bitnami subchart) ─────────────────────────────────────────────
+postgresql:
+  enabled: true
+  auth:
+    username: mybrew
+    password: mybrew
+    database: mybrew
+  primary:
+    persistence:
+      enabled: true
+      size: 2Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    initdb:
+      scripts:
+        01-schema.sql: |
+          -- Schema is created automatically by data-service SQLAlchemy on startup.
+          -- This file is a placeholder for any future seed data.
+
+# ── Redis (Bitnami subchart) ──────────────────────────────────────────────────
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+    resources:
+      requests:
+        cpu: 25m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+# ── Pod security / scheduling ─────────────────────────────────────────────────
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

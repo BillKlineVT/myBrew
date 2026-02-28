@@ -1,0 +1,51 @@
+myBrew has been installed!
+
+Release: {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ACCESS THE UI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else }}
+  Run the following to access the frontend directly:
+
+  kubectl port-forward -n {{ .Release.Namespace }} \
+    svc/{{ include "mybrew.fullname" . }}-frontend 3000:80
+
+  Then open: http://localhost:3000
+{{- end }}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  api-gateway    → {{ include "mybrew.fullname" . }}-api-gateway:8000
+  data-service   → {{ include "mybrew.fullname" . }}-data-service:8001
+  sensor-service → {{ include "mybrew.fullname" . }}-sensor-service:8002
+  gpio-service   → {{ include "mybrew.fullname" . }}-gpio-service:8003
+  pid-service    → {{ include "mybrew.fullname" . }}-pid-service:8004
+  frontend       → {{ include "mybrew.fullname" . }}-frontend:80
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  HARDWARE MODE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  sensor-service MOCK_HARDWARE: {{ .Values.sensorService.mockHardware }}
+  gpio-service   MOCK_HARDWARE: {{ .Values.gpioService.mockHardware }}
+
+  To enable real RPi hardware:
+    helm upgrade {{ .Release.Name }} ./helm/mybrew \
+      --set sensorService.mockHardware=false \
+      --set gpioService.mockHardware=false
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  USEFUL COMMANDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  kubectl get pods -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+  kubectl logs -n {{ .Release.Namespace }} -l app.kubernetes.io/component=sensor-service -f

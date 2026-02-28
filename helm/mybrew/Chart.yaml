@@ -1,0 +1,24 @@
+apiVersion: v2
+name: mybrew
+description: myBrew brewing controller — microservices web app on Kubernetes
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - homebrew
+  - brewing
+  - raspberry-pi
+  - iot
+maintainers:
+  - name: myBrew
+sources:
+  - https://github.com/billklinefelter/myBrew
+dependencies:
+  - name: postgresql
+    version: "15.5.38"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: postgresql.enabled
+  - name: redis
+    version: "20.6.3"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled
