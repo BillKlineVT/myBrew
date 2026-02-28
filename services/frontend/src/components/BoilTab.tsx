@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
-import type { SensorReading, PIDSettings } from '../api/client'
+import type { SensorReading } from '../api/client'
 
 interface Props {
   latest: SensorReading
