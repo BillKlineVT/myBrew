@@ -69,6 +69,8 @@ export interface BrewSession {
   id?: number
   started_at?: string
   ended_at?: string
+  name?: string
+  recipe_id?: number
   pre_boil_gravity?: string
   mash_ph?: number
   ground_water_temp?: number
@@ -140,6 +142,7 @@ export const api = {
   getSessions: () => get<BrewSession[]>('/sessions'),
   createSession: (session: BrewSession) => post<BrewSession>('/sessions', session),
   endSession: (id: number) => patch<BrewSession>(`/sessions/${id}/end`, {}),
+  updateSession: (id: number, data: Partial<BrewSession>) => patch<BrewSession>(`/sessions/${id}`, data),
   getChecklist: (sessionId: number) =>
     get<ChecklistEntry[]>(`/sessions/${sessionId}/checklist`),
   completeStep: (sessionId: number, step: string) =>

@@ -39,9 +39,15 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        # Ensure ended_at column exists for existing deployments
+        # Ensure columns exist for existing deployments
         await conn.execute(text(
             "ALTER TABLE brew_sessions ADD COLUMN IF NOT EXISTS ended_at TIMESTAMP WITH TIME ZONE"
+        ))
+        await conn.execute(text(
+            "ALTER TABLE brew_sessions ADD COLUMN IF NOT EXISTS name VARCHAR"
+        ))
+        await conn.execute(text(
+            "ALTER TABLE brew_sessions ADD COLUMN IF NOT EXISTS recipe_id INTEGER REFERENCES recipes(id)"
         ))
     log.info("Database tables created/verified")
     yield
@@ -204,6 +210,7 @@ async def list_sessions(db: AsyncSession = Depends(get_db)):
 async def create_session(payload: BrewSessionSchema, db: AsyncSession = Depends(get_db)):
     session = BrewSession(
         started_at=datetime.now(timezone.utc),
+        name=payload.name,
         pre_boil_gravity=payload.pre_boil_gravity,
         mash_ph=payload.mash_ph,
         ground_water_temp=payload.ground_water_temp,
@@ -225,6 +232,21 @@ async def end_session(session_id: int, db: AsyncSession = Depends(get_db)):
     if session is None:
         raise HTTPException(status_code=404, detail="Session not found")
     session.ended_at = datetime.now(timezone.utc)
+    await db.commit()
+    await db.refresh(session)
+    return session
+
+
+@app.patch("/sessions/{session_id}", response_model=BrewSessionSchema)
+async def update_session(session_id: int, payload: BrewSessionSchema, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(BrewSession).where(BrewSession.id == session_id))
+    session = result.scalar_one_or_none()
+    if session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+    if payload.name is not None:
+        session.name = payload.name
+    if payload.recipe_id is not None:
+        session.recipe_id = payload.recipe_id
     await db.commit()
     await db.refresh(session)
     return session

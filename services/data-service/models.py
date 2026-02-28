@@ -59,6 +59,8 @@ class BrewSession(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     started_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     ended_at = Column(DateTime(timezone=True), nullable=True)
+    name = Column(String, nullable=True)
+    recipe_id = Column(Integer, ForeignKey("recipes.id"), nullable=True)
     pre_boil_gravity = Column(String)
     mash_ph = Column(Float)
     ground_water_temp = Column(Float)
@@ -178,6 +180,8 @@ class BrewSessionSchema(BaseModel):
     id: Optional[int] = None
     started_at: Optional[datetime] = None
     ended_at: Optional[datetime] = None
+    name: Optional[str] = None
+    recipe_id: Optional[int] = None
     pre_boil_gravity: Optional[str] = None
     mash_ph: Optional[float] = None
     ground_water_temp: Optional[float] = None

@@ -19,6 +19,13 @@ export default function RecipesTab() {
     enabled: selectedId != null,
   })
 
+  const { data: sessions } = useQuery({
+    queryKey: ['sessions'],
+    queryFn: api.getSessions,
+  })
+
+  const activeSession = sessions?.find((s) => s.ended_at == null) ?? null
+
   const importMut = useMutation({
     mutationFn: api.importBeerXML,
     onSuccess: (imported) => {
@@ -106,24 +113,70 @@ export default function RecipesTab() {
             Select a recipe or import a BeerXML file
           </div>
         ) : (
-          <RecipeDetail recipe={recipe} />
+          <RecipeDetail recipe={recipe} activeSessionId={activeSession?.id ?? null} />
         )}
       </div>
     </div>
   )
 }
 
-function RecipeDetail({ recipe }: { recipe: Recipe }) {
+function RecipeDetail({ recipe, activeSessionId }: { recipe: Recipe; activeSessionId: number | null }) {
+  const qc = useQueryClient()
+  const [applyMsg, setApplyMsg] = useState<string | null>(null)
   const sortedSteps = [...(recipe.mash_steps ?? [])].sort(
     (a, b) => (a.step_number ?? 0) - (b.step_number ?? 0)
   )
+
+  const canApply =
+    activeSessionId != null &&
+    recipe.id != null &&
+    recipe.strike_temp != null &&
+    (recipe.mash_steps ?? []).length > 0
+
+  async function handleApplyToSession() {
+    if (!canApply) return
+    try {
+      await api.updateSession(activeSessionId!, { recipe_id: recipe.id })
+      const hlt = await api.getPID('HLT')
+      await api.setPID('HLT', { ...hlt, set_temp: recipe.strike_temp!, enabled: true })
+      const mlt = await api.getPID('MLT')
+      await api.setPID('MLT', { ...mlt, set_temp: sortedSteps[0].temperature!, enabled: true })
+      qc.invalidateQueries({ queryKey: ['sessions'] })
+      qc.invalidateQueries({ queryKey: ['pid', 'HLT'] })
+      qc.invalidateQueries({ queryKey: ['pid', 'MLT'] })
+      setApplyMsg('Recipe applied to session ✓')
+      setTimeout(() => setApplyMsg(null), 3000)
+    } catch (e) {
+      setApplyMsg(`Error: ${e}`)
+      setTimeout(() => setApplyMsg(null), 4000)
+    }
+  }
 
   return (
     <div style={styles.detail}>
       {/* Header stats */}
       <div style={styles.detailHeader}>
-        <div style={styles.detailName}>{recipe.name ?? 'Unnamed Recipe'}</div>
-        {recipe.brewer && <div style={styles.detailBrewer}>by {recipe.brewer}</div>}
+        <div style={styles.detailHeaderRow}>
+          <div>
+            <div style={styles.detailName}>{recipe.name ?? 'Unnamed Recipe'}</div>
+            {recipe.brewer && <div style={styles.detailBrewer}>by {recipe.brewer}</div>}
+          </div>
+          <div style={styles.applyArea}>
+            <button
+              style={{ ...styles.applyBtn, ...(canApply ? {} : styles.applyBtnDisabled) }}
+              onClick={handleApplyToSession}
+              disabled={!canApply}
+              title={canApply ? 'Apply this recipe to the current brew session' : 'No active session or missing strike temp / mash steps'}
+            >
+              ▶ Use for Current Session
+            </button>
+            {applyMsg && (
+              <span style={applyMsg.startsWith('Error') ? styles.applyError : styles.applySuccess}>
+                {applyMsg}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
 
       <div style={styles.statGrid}>
@@ -329,6 +382,45 @@ const styles: Record<string, React.CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     gap: 4,
+  },
+  detailHeaderRow: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 12,
+    flexWrap: 'wrap',
+  },
+  applyArea: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    gap: 6,
+    flexShrink: 0,
+  },
+  applyBtn: {
+    fontSize: 13,
+    fontWeight: 700,
+    background: '#1a3a2a',
+    color: '#68d391',
+    border: '1px solid #276749',
+    borderRadius: 6,
+    padding: '7px 14px',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap' as const,
+  },
+  applyBtnDisabled: {
+    background: '#1e2430',
+    color: '#4a5568',
+    border: '1px solid #2d3748',
+    cursor: 'not-allowed',
+  },
+  applySuccess: {
+    fontSize: 12,
+    color: '#68d391',
+  },
+  applyError: {
+    fontSize: 12,
+    color: '#fc8181',
   },
   detailName: {
     fontSize: 22,
