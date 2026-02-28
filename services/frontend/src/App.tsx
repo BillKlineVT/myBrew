@@ -5,9 +5,10 @@ import HLTTab from './components/HLTTab'
 import MLTTab from './components/MLTTab'
 import BoilTab from './components/BoilTab'
 import ChillTab from './components/ChillTab'
+import SessionTab from './components/SessionTab'
 import RecipesTab from './components/RecipesTab'
 
-const TABS = ['Overview', 'HLT', 'MLT', 'Boil', 'Chill', 'Recipes'] as const
+const TABS = ['Overview', 'HLT', 'MLT', 'Boil', 'Chill', 'Session', 'Recipes'] as const
 type Tab = typeof TABS[number]
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
         {activeTab === 'MLT'      && <MLTTab  latest={latest} history={history} />}
         {activeTab === 'Boil'     && <BoilTab latest={latest} history={history} />}
         {activeTab === 'Chill'    && <ChillTab latest={latest} history={history} />}
+        {activeTab === 'Session'  && <SessionTab />}
         {activeTab === 'Recipes'  && <RecipesTab />}
       </main>
     </div>
