@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '../api/client'
 import type { SensorReading, PIDSettings } from '../api/client'
 
@@ -20,6 +20,7 @@ function formatElapsed(ms: number): string {
 
 export default function StatusBar({ isConnected, latest, hltPID }: Props) {
   const [now, setNow] = useState(Date.now())
+  const qc = useQueryClient()
 
   // Tick every second
   useEffect(() => {
@@ -33,10 +34,9 @@ export default function StatusBar({ isConnected, latest, hltPID }: Props) {
     refetchInterval: 30_000,
   })
 
-  const latestSession = sessions && sessions.length > 0
-    ? sessions[sessions.length - 1]
-    : null
-  const sessionId = latestSession?.id
+  // Active session = most recent session with no ended_at
+  const activeSession = sessions?.find((s) => s.ended_at == null) ?? null
+  const sessionId = activeSession?.id
 
   const { data: checklist } = useQuery({
     queryKey: ['checklist', sessionId],
@@ -45,8 +45,22 @@ export default function StatusBar({ isConnected, latest, hltPID }: Props) {
     refetchInterval: 5_000,
   })
 
-  const elapsedMs = latestSession?.started_at
-    ? now - new Date(latestSession.started_at).getTime()
+  const startMut = useMutation({
+    mutationFn: () => api.createSession({}),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['sessions'] }),
+  })
+
+  const stopMut = useMutation({
+    mutationFn: () => api.endSession(sessionId!),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['sessions'] }),
+  })
+
+  // If session ended, count to ended_at; otherwise count to now
+  const endTime = activeSession?.ended_at
+    ? new Date(activeSession.ended_at).getTime()
+    : now
+  const elapsedMs = activeSession?.started_at
+    ? endTime - new Date(activeSession.started_at).getTime()
     : -1
 
   const currentStep = checklist?.find((e) => !e.completed_at)?.step_name ?? null
@@ -67,7 +81,7 @@ export default function StatusBar({ isConnected, latest, hltPID }: Props) {
       <div style={styles.section}>
         <span style={styles.icon}>📋</span>
         <span style={styles.stepText}>
-          {currentStep ? `Current step: ${currentStep}` : latestSession ? 'Brew in progress' : 'No active session'}
+          {currentStep ? `Current step: ${currentStep}` : activeSession ? 'Brew in progress' : 'No active session'}
         </span>
       </div>
 
@@ -78,6 +92,24 @@ export default function StatusBar({ isConnected, latest, hltPID }: Props) {
         <span style={isConnected ? styles.wsPillGreen : styles.wsPillRed}>
           {isConnected ? '🟢 Live' : '🔴 Offline'}
         </span>
+
+        {activeSession == null ? (
+          <button
+            style={styles.startBtn}
+            onClick={() => startMut.mutate()}
+            disabled={startMut.isPending}
+          >
+            ▶ Start Brew
+          </button>
+        ) : (
+          <button
+            style={styles.stopBtn}
+            onClick={() => stopMut.mutate()}
+            disabled={stopMut.isPending || activeSession.ended_at != null}
+          >
+            ⏹ End Brew
+          </button>
+        )}
       </div>
     </div>
   )
@@ -139,5 +171,25 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid #742a2a',
     borderRadius: 12,
     padding: '2px 10px',
+  },
+  startBtn: {
+    fontSize: 12,
+    fontWeight: 700,
+    background: '#1a3a2a',
+    color: '#68d391',
+    border: '1px solid #276749',
+    borderRadius: 6,
+    padding: '4px 12px',
+    cursor: 'pointer',
+  },
+  stopBtn: {
+    fontSize: 12,
+    fontWeight: 700,
+    background: '#3a1a1a',
+    color: '#fc8181',
+    border: '1px solid #742a2a',
+    borderRadius: 6,
+    padding: '4px 12px',
+    cursor: 'pointer',
   },
 }

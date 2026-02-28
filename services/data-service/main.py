@@ -10,7 +10,7 @@ from typing import Optional
 
 import xmltodict
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File
-from sqlalchemy import select, desc, delete
+from sqlalchemy import select, desc, delete, text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import selectinload
 
@@ -39,6 +39,10 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False)
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Ensure ended_at column exists for existing deployments
+        await conn.execute(text(
+            "ALTER TABLE brew_sessions ADD COLUMN IF NOT EXISTS ended_at TIMESTAMP WITH TIME ZONE"
+        ))
     log.info("Database tables created/verified")
     yield
     await engine.dispose()
@@ -209,6 +213,18 @@ async def create_session(payload: BrewSessionSchema, db: AsyncSession = Depends(
     # Auto-populate checklist
     for step in CHECKLIST_STEPS:
         db.add(ChecklistEntry(session_id=session.id, step_name=step))
+    await db.commit()
+    await db.refresh(session)
+    return session
+
+
+@app.patch("/sessions/{session_id}/end", response_model=BrewSessionSchema)
+async def end_session(session_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(BrewSession).where(BrewSession.id == session_id))
+    session = result.scalar_one_or_none()
+    if session is None:
+        raise HTTPException(status_code=404, detail="Session not found")
+    session.ended_at = datetime.now(timezone.utc)
     await db.commit()
     await db.refresh(session)
     return session

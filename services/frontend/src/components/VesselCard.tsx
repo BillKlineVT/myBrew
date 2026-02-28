@@ -2,26 +2,23 @@ import type { ReactNode } from 'react'
 
 interface VesselCardProps {
   title: string
-  imageSrc: string
+  vesselSvg: ReactNode
   temp?: number
   setTemp?: number
   level?: number
-  levelMax?: number
   pwm?: number
   controls?: ReactNode
 }
 
 export default function VesselCard({
   title,
-  imageSrc,
+  vesselSvg,
   temp,
   setTemp,
   level,
-  levelMax = 14,
   pwm,
   controls,
 }: VesselCardProps) {
-  const levelPct = level != null ? Math.min(100, (level / levelMax) * 100) : 0
   const isOffSetpoint = temp != null && setTemp != null && Math.abs(temp - setTemp) > 5
   const tempColor = isOffSetpoint ? '#ed8936' : '#e2e8f0'
 
@@ -29,22 +26,13 @@ export default function VesselCard({
     <div style={styles.card}>
       <div style={styles.title}>{title}</div>
 
-      {/* Vessel image with liquid level overlay */}
+      {/* SVG vessel illustration with embedded level fill */}
       <div style={styles.imageWrap}>
-        <img src={imageSrc} alt={title} style={styles.image} />
-        <div
-          style={{
-            ...styles.levelOverlay,
-            height: `${levelPct}%`,
-          }}
-        />
+        {vesselSvg}
       </div>
 
-      {/* Level bar */}
+      {/* Level label */}
       <div style={styles.levelRow}>
-        <div style={styles.levelBar}>
-          <div style={{ ...styles.levelFill, width: `${levelPct}%` }} />
-        </div>
         <span style={styles.levelLabel}>
           {level != null ? `${level.toFixed(1)} gal` : '—'}
         </span>
@@ -94,44 +82,12 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: '0.08em',
   },
   imageWrap: {
-    position: 'relative',
     width: '100%',
     height: 160,
-    borderRadius: 6,
-    overflow: 'hidden',
-    background: '#111',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    display: 'block',
-  },
-  levelOverlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    background: 'rgba(66, 153, 225, 0.35)',
-    transition: 'height 0.8s ease',
-    pointerEvents: 'none',
   },
   levelRow: {
     display: 'flex',
     alignItems: 'center',
-    gap: 8,
-  },
-  levelBar: {
-    flex: 1,
-    height: 5,
-    background: '#2d3748',
-    borderRadius: 3,
-  },
-  levelFill: {
-    height: '100%',
-    background: '#4299e1',
-    borderRadius: 3,
-    transition: 'width 0.8s ease',
   },
   levelLabel: {
     fontSize: 12,

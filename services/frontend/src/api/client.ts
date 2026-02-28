@@ -22,10 +22,11 @@ async function request<T>(
   return res.json() as Promise<T>
 }
 
-const get  = <T>(path: string) => request<T>('GET', path)
-const post = <T>(path: string, body: unknown) => request<T>('POST', path, body)
-const put  = <T>(path: string, body: unknown) => request<T>('PUT', path, body)
-const del  = <T>(path: string) => request<T>('DELETE', path)
+const get   = <T>(path: string) => request<T>('GET', path)
+const post  = <T>(path: string, body: unknown) => request<T>('POST', path, body)
+const put   = <T>(path: string, body: unknown) => request<T>('PUT', path, body)
+const patch = <T>(path: string, body: unknown) => request<T>('PATCH', path, body)
+const del   = <T>(path: string) => request<T>('DELETE', path)
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -67,6 +68,7 @@ export interface BrewerySetting {
 export interface BrewSession {
   id?: number
   started_at?: string
+  ended_at?: string
   pre_boil_gravity?: string
   mash_ph?: number
   ground_water_temp?: number
@@ -137,6 +139,7 @@ export const api = {
   // Brew sessions
   getSessions: () => get<BrewSession[]>('/sessions'),
   createSession: (session: BrewSession) => post<BrewSession>('/sessions', session),
+  endSession: (id: number) => patch<BrewSession>(`/sessions/${id}/end`, {}),
   getChecklist: (sessionId: number) =>
     get<ChecklistEntry[]>(`/sessions/${sessionId}/checklist`),
   completeStep: (sessionId: number, step: string) =>

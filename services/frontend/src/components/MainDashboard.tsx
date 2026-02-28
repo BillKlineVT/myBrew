@@ -3,6 +3,8 @@ import { api } from '../api/client'
 import type { SensorReading, GPIOState } from '../api/client'
 import VesselCard from './VesselCard'
 import StatusBar from './StatusBar'
+import CoolerSVG from './vessels/CoolerSVG'
+import KettleSVG from './vessels/KettleSVG'
 
 interface Props {
   latest: SensorReading
@@ -92,7 +94,7 @@ export default function MainDashboard({ latest, isConnected }: Props) {
         {/* HLT */}
         <VesselCard
           title="HLT"
-          imageSrc="/vessels/hlt.jpg"
+          vesselSvg={<CoolerSVG levelPct={(latest.hlt_level ?? 0) / 14 * 100} />}
           temp={latest.hlt_temp}
           setTemp={hltPID?.set_temp}
           level={latest.hlt_level}
@@ -116,14 +118,14 @@ export default function MainDashboard({ latest, isConnected }: Props) {
         {/* MLT */}
         <VesselCard
           title="MLT"
-          imageSrc="/vessels/mlt.jpg"
+          vesselSvg={<CoolerSVG levelPct={(latest.hlt_level ?? 0) / 14 * 100} />}
           temp={latest.mash_temp}
         />
 
         {/* Boil Kettle */}
         <VesselCard
           title="Boil Kettle"
-          imageSrc="/vessels/bk.jpg"
+          vesselSvg={<KettleSVG levelPct={(latest.boil_level ?? 0) / 14 * 100} />}
           temp={latest.boil_temp}
           setTemp={bkPID?.enabled ? bkPID?.set_temp : undefined}
           level={latest.boil_level}
