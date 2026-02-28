@@ -31,29 +31,43 @@ _ws_clients: set[WebSocket] = set()
 # ── WebSocket hub ─────────────────────────────────────────────────────────────
 
 async def _redis_subscriber():
-    """Background task: subscribe to Redis and fan-out to WS clients."""
+    """Poll Redis pub/sub and fan-out to connected WebSocket clients."""
     redis = aioredis.from_url(REDIS_URL)
     pubsub = redis.pubsub()
-    await pubsub.subscribe("mybrew:sensors")
-    log.info("Subscribed to mybrew:sensors")
-    async for message in pubsub.listen():
-        if message["type"] != "message":
-            continue
-        payload = message["data"]
-        if isinstance(payload, bytes):
-            payload = payload.decode()
-        dead = set()
-        for ws in _ws_clients:
-            try:
-                await ws.send_text(payload)
-            except Exception:
-                dead.add(ws)
-        _ws_clients.difference_update(dead)
+    try:
+        await pubsub.subscribe("mybrew:sensors")
+        log.info("Subscribed to mybrew:sensors")
+        while True:
+            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
+            if message and message["type"] == "message":
+                payload = message["data"]
+                if isinstance(payload, bytes):
+                    payload = payload.decode()
+                dead = set()
+                for ws in _ws_clients:
+                    try:
+                        await ws.send_text(payload)
+                    except Exception:
+                        dead.add(ws)
+                _ws_clients.difference_update(dead)
+            await asyncio.sleep(0.01)
+    finally:
+        await pubsub.unsubscribe()
+        await redis.aclose()
 
 
 @app.on_event("startup")
 async def startup():
-    asyncio.create_task(_redis_subscriber())
+    async def _run():
+        while True:
+            try:
+                await _redis_subscriber()
+            except asyncio.CancelledError:
+                return
+            except Exception as e:
+                log.error("Redis subscriber error: %s — restarting in 3 s", e)
+                await asyncio.sleep(3)
+    asyncio.create_task(_run())
 
 
 @app.websocket("/ws")
