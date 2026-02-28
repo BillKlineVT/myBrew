@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 
 type MessageHandler = (data: unknown) => void
 
@@ -7,6 +7,7 @@ export function useWebSocket(onMessage: MessageHandler) {
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const handlerRef = useRef(onMessage)
   handlerRef.current = onMessage
+  const [isConnected, setIsConnected] = useState(false)
 
   const connect = useCallback(() => {
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
@@ -15,6 +16,7 @@ export function useWebSocket(onMessage: MessageHandler) {
 
     socket.onopen = () => {
       console.log('[WS] connected')
+      setIsConnected(true)
       if (reconnectTimer.current) {
         clearTimeout(reconnectTimer.current)
         reconnectTimer.current = null
@@ -32,10 +34,12 @@ export function useWebSocket(onMessage: MessageHandler) {
 
     socket.onclose = () => {
       console.log('[WS] disconnected — reconnecting in 3s')
+      setIsConnected(false)
       reconnectTimer.current = setTimeout(connect, 3000)
     }
 
     socket.onerror = () => {
+      setIsConnected(false)
       socket.close()
     }
 
@@ -49,4 +53,6 @@ export function useWebSocket(onMessage: MessageHandler) {
       ws.current?.close()
     }
   }, [connect])
+
+  return { isConnected }
 }

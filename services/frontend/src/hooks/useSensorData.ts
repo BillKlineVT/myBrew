@@ -25,7 +25,7 @@ export function useSensorData() {
     })
   }, [])
 
-  useWebSocket(handleMessage)
+  const { isConnected } = useWebSocket(handleMessage)
 
-  return { latest, history }
+  return { latest, history, isConnected }
 }

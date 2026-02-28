@@ -11,7 +11,7 @@ type Tab = typeof TABS[number]
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('Overview')
-  const { latest, history } = useSensorData()
+  const { latest, history, isConnected } = useSensorData()
 
   return (
     <div style={styles.shell}>
@@ -31,7 +31,7 @@ export default function App() {
       </header>
 
       <main style={styles.main}>
-        {activeTab === 'Overview' && <MainDashboard latest={latest} />}
+        {activeTab === 'Overview' && <MainDashboard latest={latest} isConnected={isConnected} />}
         {activeTab === 'HLT'      && <HLTTab  latest={latest} history={history} />}
         {activeTab === 'MLT'      && <MLTTab  latest={latest} history={history} />}
         {activeTab === 'Boil'     && <BoilTab latest={latest} history={history} />}
